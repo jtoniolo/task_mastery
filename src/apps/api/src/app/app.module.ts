@@ -7,6 +7,7 @@ import { DataSource } from 'typeorm';
 import { Message } from './gmail/gmail.entity';
 import { GmailModule } from './gmail/gmail.module';
 import { GmailController } from './gmail/gmail.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GmailController } from './gmail/gmail.controller';
       inject: [ConfigService],
     }),
     GmailModule,
+    AuthModule,
   ],
   controllers: [AppController, GmailController],
   providers: [AppService],
