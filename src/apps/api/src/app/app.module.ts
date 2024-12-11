@@ -1,24 +1,34 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { Message } from './gmail/gmail.entity';
+import { GmailModule } from './gmail/gmail.module';
+import { GmailController } from './gmail/gmail.controller';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-      entities: [],
-      //synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.dev.local'], //, '.env.dev', '.env'
     }),
-
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mongodb',
+        url: configService.get<string>('MONGODB_URI'),
+        //useNewUrlParser: true,
+        //useUnifiedTopology: true,
+        database: configService.get<string>('MONGODB_DB_NAME'),
+        entities: [Message],
+      }),
+      inject: [ConfigService],
+    }),
+    GmailModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, GmailController],
   providers: [AppService],
 })
 export class AppModule {
