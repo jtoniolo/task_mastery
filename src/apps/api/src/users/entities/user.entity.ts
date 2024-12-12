@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, UpdateDateColumn, ObjectIdColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn()
+  @ObjectIdColumn()
   id: string;
 
   @Column({ unique: true })
