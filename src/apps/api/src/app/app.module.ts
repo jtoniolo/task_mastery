@@ -4,9 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DataSource } from 'typeorm';
-import { Message } from './gmail/gmail.entity';
-import { GmailModule } from './gmail/gmail.module';
-import { GmailController } from './gmail/gmail.controller';
+import { AuthController } from '../auth/auth.controller';
+import { AuthModule } from '../auth/auth.module';
+import { User } from '../users/entities/user.entity';
+// import { Message } from './gmail/gmail.entity';
+// import { GmailModule } from './gmail/gmail.module';
+// import { GmailController } from './gmail/gmail.controller';
 
 @Module({
   imports: [
@@ -22,13 +25,14 @@ import { GmailController } from './gmail/gmail.controller';
         //useNewUrlParser: true,
         //useUnifiedTopology: true,
         database: configService.get<string>('MONGODB_DB_NAME'),
-        entities: [Message],
+        entities: [User],
       }),
       inject: [ConfigService],
     }),
-    GmailModule,
+    //GmailModule,
+    AuthModule,
   ],
-  controllers: [AppController, GmailController],
+  controllers: [AppController, AuthController],
   providers: [AppService],
 })
 export class AppModule {
