@@ -30,6 +30,6 @@ export class AuthController {
       secure: process.env.NODE_ENV === 'production',
     });
 
-    return res.status(HttpStatus.OK);
+    return res.redirect(process.env.CLIENT_URL + '/auth');
   }
 }
