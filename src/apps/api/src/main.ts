@@ -12,14 +12,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.enableCors({
+    origin: process.env.CORS_ORIGINS.split(',')
+      .map((origin) => origin.trim())
+      .find((origin) => origin.length > 0),
+    credentials: true,
+  });
   app.use(
-    session(
-      {
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-      }
-    )
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+    })
   );
   const port = process.env.PORT || 3000;
   await app.listen(port);
