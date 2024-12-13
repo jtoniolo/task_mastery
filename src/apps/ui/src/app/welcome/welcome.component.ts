@@ -10,7 +10,7 @@ import { AppConfigService } from '../config/app-config.service';
 export class WelcomeComponent {
   private readonly appConfig = inject(AppConfigService);
   private readonly document = inject(DOCUMENT);
-  signUpWithGoogle() {
+  signUpWithGoogle(): void {
     this.document.open(
       this.appConfig.apiBaseUrl + '/api/auth/google',
       'Authenticate with Google',
