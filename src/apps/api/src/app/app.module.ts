@@ -7,9 +7,8 @@ import { DataSource } from 'typeorm';
 import { AuthController } from '../auth/auth.controller';
 import { AuthModule } from '../auth/auth.module';
 import { User } from '../users/entities/user.entity';
-// import { Message } from './gmail/gmail.entity';
-// import { GmailModule } from './gmail/gmail.module';
-// import { GmailController } from './gmail/gmail.controller';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 @Module({
   imports: [
@@ -28,6 +27,23 @@ import { User } from '../users/entities/user.entity';
         entities: [User],
       }),
       inject: [ConfigService],
+    }),
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.simple()
+          ),
+        }),
+        new winston.transports.File({
+          filename: 'application.log',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.json()
+          ),
+        }),
+      ],
     }),
     //GmailModule,
     AuthModule,

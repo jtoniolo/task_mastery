@@ -54,3 +54,7 @@ The scope of the project is to build a tool for cleaning out Gmail inboxes. The 
 - **Backend**: NestJS, TypeScript, Node.js
 - **Frontend**: Angular v19
 - **Database**: MongoDB
+
+## Logging Configuration and Usage
+
+For detailed information on logging configuration and usage, please refer to the [LOGGING.md](LOGGING.md) file.
