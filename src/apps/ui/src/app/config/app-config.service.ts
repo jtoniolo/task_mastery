@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable, of } from 'rxjs';
 import { AppConfig } from './app-config';
 
 @Injectable({
@@ -10,12 +10,18 @@ export class AppConfigService {
   private readonly http = inject(HttpClient);
   private appConfig = {} as AppConfig;
 
-  loadAppConfig(): Observable<void> {
-    return this.http.get('/assets/config.json').pipe(
+  loadAppConfig(): Observable<AppConfig> {
+    return this.http.get('/config.json').pipe(
       map((data) => {
         this.appConfig = data as AppConfig;
+        return data as AppConfig;
       })
     );
+
+    // for testing, lets just return a static object
+    // return of({
+    //   apiBaseUrl: 'http://localhost:3000',
+    // });
   }
 
   get apiBaseUrl(): string {

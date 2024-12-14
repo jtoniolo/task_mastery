@@ -2591,6 +2591,53 @@
   dependencies:
     uuid "9.0.1"
 
+"@ngrx/component-store@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/component-store/-/component-store-18.1.1.tgz#7bc4cfbeebe56464e941f57a04d8a4402c4ec903"
+  integrity sha512-+FDd44D+unx/eE/7qCyK1IDsTu8503JOnj3lEhL9f9TDmE4arDNqeNx/8Sh3V3HDkH7mVC9iV0c538ACGlvWIA==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/effects@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-18.1.1.tgz#df51cc2874e2470bfe073aa3e01f317977d8fd49"
+  integrity sha512-XXob8kYEvYMaZwgHtrrTW0XZargbu5PloEpNHLnzB8jPk0yWEw6keryxaF09Ylws1779MWvMmF/YP2rPl04nHQ==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/entity@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/entity/-/entity-18.1.1.tgz#9ca089080a2e684fd4955d3a6ad90047539b97ba"
+  integrity sha512-oRt/wG+szR4lMvMut16uWfbMD2CnOMscnQIbU+lcOs5+UDOzr4aHGBVpErzcoVWSTp/sl7x02j+2dto5NQZWoA==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/router-store@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-18.1.1.tgz#33f26bb8cc32ccffae05c1797a5821a7c8c838eb"
+  integrity sha512-S1/09T8EJHso1keOZ2Q3hb1oAsdJ/FSEWkn24yWJXftbXOKJq1jnrYhNaVm5gPnxGzdQ1mqRtLuMKaDClyxP5A==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/schematics@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/schematics/-/schematics-18.1.1.tgz#4f811aae1e7c601e2407e99bef091afe94d01058"
+  integrity sha512-6EexKNoTNzwHf8AIXcioOm11l6rTZ8WUpGYiPTSW2I/Pn5CsjCBDwbBDEHJZ1RqGoCXpunZn6adH63A2V8V4Sg==
+
+"@ngrx/store-devtools@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-18.1.1.tgz#0a62949a73885728d1a1908f66779c13be307eaf"
+  integrity sha512-tfn9Ms1q2bl7VDWwHyj7dUbwmGiiVzIpOKZs39rsms8tG8hbvsxoczyQAp2w5erVtoJb8ltIh1/birKkS7HmuQ==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngrx/store@^18.0.2":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-18.1.1.tgz#e189967bd8d385ea48e14a7d96542cbf062e8382"
+  integrity sha512-K0v1akJ2sEnIeb1AUA064+ksgRgbMgVG9HbSsLBxENbFjK2ZvKRxo1bpOw6WHW9+hyDTlhZGl7+gUtjmo3497g==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngtools/webpack@19.0.4":
   version "19.0.4"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-19.0.4.tgz#4084b797cf211718a716256287ee1fd029f919d3"
@@ -7559,6 +7606,13 @@ jake@^10.8.5:
     filelist "^1.0.4"
     minimatch "^3.1.2"
 
+jasmine-marbles@~0.9.1:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/jasmine-marbles/-/jasmine-marbles-0.9.2.tgz#5adfee5f72c7f24270687fa64a6e8a8613ffa841"
+  integrity sha512-T7RjG4fRsdiGGzbQZ6Kj39qYt6O1/KIcR4FkUNsD3DUGkd/AzpwzN+xtk0DXlLWEz5BaVdK1SzMgQDVw879c4Q==
+  dependencies:
+    lodash "^4.17.20"
+
 jest-changed-files@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-29.7.0.tgz#1c06d07e77c78e1585d020424dedc10d6e17ac3a"
@@ -8461,7 +8515,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==
 
-lodash@4.17.21, lodash@^4.17.14:
+lodash@4.17.21, lodash@^4.17.14, lodash@^4.17.20:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
