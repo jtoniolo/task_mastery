@@ -17,6 +17,10 @@ export class AppFacade {
   allApp$ = this.store.pipe(select(AppSelectors.selectAllApp));
   apiBaseUrl$ = this.store.pipe(select(AppSelectors.selectApiBaseUrl));
 
+  authenticated(token: string) {
+    this.store.dispatch(AppActions.authenticated({ token }));
+  }
+
   /**
    * Use the initialization action to perform one
    * or more tasks in your Effects.

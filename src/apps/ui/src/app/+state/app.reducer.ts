@@ -28,7 +28,8 @@ const reducer = createReducer(
     title: app.title || state.title,
     loaded: true,
   })),
-  on(AppActions.loadAppFailure, (state, { error }) => ({ ...state, error }))
+  on(AppActions.loadAppFailure, (state, { error }) => ({ ...state, error })),
+  on(AppActions.authenticated, (state, { token }) => ({ ...state, token }))
 );
 
 export function appReducer(state: AppState | undefined, action: Action) {

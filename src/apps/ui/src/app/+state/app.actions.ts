@@ -12,3 +12,8 @@ export const loadAppFailure = createAction(
   '[App/API] Load App Failure',
   props<{ error: any }>()
 );
+
+export const authenticated = createAction(
+  '[API] Authenticated',
+  props<{ token: string }>()
+);
