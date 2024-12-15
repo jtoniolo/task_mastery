@@ -80,3 +80,90 @@ And join the Nx community:
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+## Rate Limiting Policy
+
+### Overview
+
+Rate limiting is implemented in the NestJS API to prevent abuse and ensure fair use of the API. The rate limiting policy restricts users to a certain number of requests per second, minute, and hour.
+
+### Rate Limits
+
+- **10 requests per second**
+- **100 requests per minute**
+- **2000 requests per hour**
+
+### Exceeding Rate Limits
+
+If a user exceeds the rate limits, the API will return a `429 Too Many Requests` response.
+
+### Implementation
+
+The rate limiting is implemented using the `@nestjs/throttler` package. The `ThrottlerModule` is configured with the specified thresholds, and a custom `ThrottlerBehindProxyGuard` is used to handle IPs forwarded by the proxy.
+
+### Configuration Example
+
+```typescript
+import { Module } from '@nestjs/common';
+import { ThrottlerModule } from '@nestjs/throttler';
+
+@Module({
+  imports: [
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 10,
+      },
+      {
+        name: 'medium',
+        ttl: 60000,
+        limit: 100,
+      },
+      {
+        name: 'long',
+        ttl: 3600000,
+        limit: 2000,
+      },
+    ]),
+  ],
+})
+export class AppModule {}
+```
+
+### Custom Guard
+
+A custom `ThrottlerBehindProxyGuard` is implemented to extract the individualized IPs forwarded by the proxy.
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { ThrottlerGuard } from '@nestjs/throttler';
+
+@Injectable()
+export class ThrottlerBehindProxyGuard extends ThrottlerGuard {
+  protected getTracker(req: Record<string, any>): string {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    return Array.isArray(ip) ? ip[0] : ip;
+  }
+}
+```
+
+### Enabling Trust Proxy
+
+To enable trust proxy, configure the app as follows:
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.set('trust proxy', 1);
+  await app.listen(3000);
+}
+bootstrap();
+```
+
+### Documentation
+
+This documentation provides an overview of the rate limiting policy and how it is implemented in the NestJS API. For more details, refer to the [NestJS documentation on rate limiting](https://docs.nestjs.com/security/rate-limiting).

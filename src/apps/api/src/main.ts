@@ -14,6 +14,7 @@ import {
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ThrottlerBehindProxyGuard } from './guards/throttler-behind-proxy.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -39,6 +40,8 @@ async function bootstrap() {
       saveUninitialized: false,
     })
   );
+
+  app.useGlobalGuards(new ThrottlerBehindProxyGuard());
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
