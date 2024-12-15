@@ -3,15 +3,19 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  private readonly logger = new Logger(AppController.name);
-
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly logger: Logger
+  ) {}
 
   @Get()
   getData() {
-    this.logger.log('getData method called');
+    this.logger.log('getData method called', AppController.name);
     const data = this.appService.getData();
-    this.logger.log('getData method response', data);
+    this.logger.log(
+      'getData method response ' + JSON.stringify(data),
+      AppController.name
+    );
     return data;
   }
 }
