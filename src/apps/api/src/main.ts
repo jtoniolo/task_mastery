@@ -13,6 +13,7 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -38,6 +39,15 @@ async function bootstrap() {
       saveUninitialized: false,
     })
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setDescription('API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
