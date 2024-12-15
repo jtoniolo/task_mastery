@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "b-api-dev": "nx run api:build --configuration=development",
-    "s-api-dev": "nx run api:serve --configuration=development"
+    "s-api-dev": "nx run api:serve:development --configuration=development --watch=true",
+    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy"
   },
   "private": true,
   "dependencies": {
@@ -63,6 +64,7 @@
     "@angular/compiler-cli": "~19.0.0",
     "@angular/language-service": "~19.0.0",
     "@nestjs/schematics": "^10.0.1",
+    "@nestjs/swagger": "^8.1.0",
     "@nestjs/testing": "^10.0.2",
     "@ngrx/schematics": "^18.0.2",
     "@ngrx/store-devtools": "^18.0.2",
@@ -76,6 +78,7 @@
     "@nx/web": "20.2.1",
     "@nx/webpack": "20.2.1",
     "@nx/workspace": "20.2.1",
+    "@openapitools/openapi-generator-cli": "^2.15.3",
     "@schematics/angular": "~19.0.0",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
