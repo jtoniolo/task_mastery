@@ -8,7 +8,6 @@ import { AuthModule } from '../auth/auth.module';
 import { User } from '../users/entities/user.entity';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 function getTransports(): winston.transport[] {
   const list: winston.transport[] = [];
@@ -54,14 +53,4 @@ function getTransports(): winston.transport[] {
   controllers: [AppController, AuthController],
   providers: [AppService, Logger],
 })
-export class AppModule {
-  constructor() {
-    const config = new DocumentBuilder()
-      .setTitle('API Documentation')
-      .setDescription('API description')
-      .setVersion('1.0')
-      .build();
-    const document = SwaggerModule.createDocument(this, config);
-    SwaggerModule.setup('api/docs', this, document);
-  }
-}
+export class AppModule {}
