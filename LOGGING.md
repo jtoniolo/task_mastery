@@ -10,37 +10,9 @@ We use the `winston` logging library for implementing logging in the NestJS API.
 
 ## Log Configuration
 
-The logging configuration is set up in the `AppModule` using the `WinstonModule` from `nest-winston`. The configuration includes logging to both the console and a file named `application.log`.
+The logging configuration is set up in the `main.ts` file using the `WinstonModule` from `nest-winston`. The configuration includes logging to both the console and a file named `application.log`.
 
-### Example Configuration
-
-```typescript
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-
-@Module({
-  imports: [
-    WinstonModule.forRoot({
-      transports: [
-        new winston.transports.Console({
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.simple()
-          ),
-        }),
-        new winston.transports.File({
-          filename: 'application.log',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.json()
-          ),
-        }),
-      ],
-    }),
-  ],
-})
-export class AppModule {}
-```
+See https://www.npmjs.com/package/nest-winston for more details
 
 ## Log Entries
 
@@ -65,14 +37,14 @@ To manage log file sizes and retention periods, we configure log rotation and ar
 
 ```typescript
 new winston.transports.File({
-  filename: 'application.log',
+  filename: "application.log",
   maxsize: 5242880, // 5MB
   maxFiles: 5,
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.json()
+    winston.format.json(),
   ),
-})
+});
 ```
 
 In this example, log files are rotated when they reach 5MB in size, and up to 5 rotated log files are retained.
@@ -87,12 +59,12 @@ To filter logs by severity level, you can use the `level` property in the loggin
 
 ```typescript
 new winston.transports.Console({
-  level: 'warn',
+  level: "warn",
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.simple()
+    winston.format.simple(),
   ),
-})
+});
 ```
 
 In this example, only log entries with a severity level of `warn` or higher (e.g., `error`) will be logged to the console.
