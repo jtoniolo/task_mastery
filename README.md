@@ -58,3 +58,42 @@ The scope of the project is to build a tool for cleaning out Gmail inboxes. The 
 ## Logging Configuration and Usage
 
 For detailed information on logging configuration and usage, please refer to the [LOGGING.md](LOGGING.md) file.
+
+## Health Checks
+
+Health checks are implemented in the API using the `@nestjs/terminus` package. The health checks cover key endpoints and services, including database connections and third-party service dependencies. A designated monitoring endpoint `/health` is configured in the API to return the status of all health checks.
+
+### How to Use and Interpret Health Check Results
+
+1. **Access the Health Check Endpoint**:
+   - Open your browser and navigate to `http://localhost:3000/health`.
+   - You will see a JSON response indicating the status of various health checks.
+
+2. **Interpret the Results**:
+   - The JSON response will contain the status of each health check. For example:
+     ```json
+     {
+       "status": "ok",
+       "info": {
+         "database": {
+           "status": "up"
+         }
+       },
+       "error": {},
+       "details": {
+         "database": {
+           "status": "up"
+         }
+       }
+     }
+     ```
+   - The `status` field indicates the overall health status of the API.
+   - The `info` field contains the status of individual health checks that are healthy.
+   - The `error` field contains the status of individual health checks that are unhealthy.
+   - The `details` field provides detailed information about each health check.
+
+3. **Monitor the Health Status**:
+   - Regularly check the `/health` endpoint to monitor the health status of the API.
+   - Set up automated monitoring and alerting based on the health check results to proactively address any issues.
+
+By following these steps, you can effectively use and interpret the health check results to monitor the health and performance of the system proactively.
