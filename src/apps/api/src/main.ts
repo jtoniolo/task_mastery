@@ -14,12 +14,14 @@ import {
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
     logger: createLogger(),
   });
+  app.set('trust proxy', process.env.TRUSTED_PROXIES || false);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.enableVersioning({
