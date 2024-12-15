@@ -9,6 +9,9 @@ import { User } from '../users/entities/user.entity';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
 import { HealthModule } from '../health/health.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerBehindProxyGuard } from '../guards/throttler-behind-proxy.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 function getTransports(): winston.transport[] {
   const list: winston.transport[] = [];
@@ -48,11 +51,35 @@ function getTransports(): winston.transport[] {
       }),
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'second',
+        ttl: 1000,
+        limit: 10,
+      },
+      {
+        name: 'minute',
+        ttl: 60000,
+        limit: 100,
+      },
+      {
+        name: 'hour',
+        ttl: 1000 * 60 * 60,
+        limit: 2000,
+      },
+    ]),
     //GmailModule,
     AuthModule,
     HealthModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, Logger],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
+    },
+  ],
 })
 export class AppModule {}

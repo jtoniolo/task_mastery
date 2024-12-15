@@ -1,3 +1,7 @@
 {
-    "nxConsole.nxWorkspacePath": "src"
+  "nxConsole.nxWorkspacePath": "src",
+  "sonarlint.connectedMode.project": {
+    "connectionId": "jtoniolo",
+    "projectKey": "jtoniolo_email_sweeperr"
+  }
 }

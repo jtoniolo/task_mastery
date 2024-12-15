@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from './google-oauth.guard';
@@ -14,13 +7,15 @@ import { ApiFoundResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Get('google')
   @ApiFoundResponse({ description: 'Redirects to Google OAuth' })
   @UseGuards(GoogleOAuthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async auth() {}
+  async auth() {
+    /* This is empty because all the logic is handled by GoogleOAuthGuard */
+  }
 
   @Get('google/callback')
   @ApiFoundResponse({ description: "Redirects client's auth route" })
