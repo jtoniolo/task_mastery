@@ -8,6 +8,7 @@ import { AuthModule } from '../auth/auth.module';
 import { User } from '../users/entities/user.entity';
 import * as winston from 'winston';
 import LokiTransport from 'winston-loki';
+import { HealthModule } from '../health/health.module';
 
 function getTransports(): winston.transport[] {
   const list: winston.transport[] = [];
@@ -49,6 +50,7 @@ function getTransports(): winston.transport[] {
     }),
     //GmailModule,
     AuthModule,
+    HealthModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, Logger],
