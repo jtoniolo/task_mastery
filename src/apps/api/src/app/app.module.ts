@@ -1,15 +1,33 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DataSource } from 'typeorm';
 import { AuthController } from '../auth/auth.controller';
 import { AuthModule } from '../auth/auth.module';
 import { User } from '../users/entities/user.entity';
-// import { Message } from './gmail/gmail.entity';
-// import { GmailModule } from './gmail/gmail.module';
-// import { GmailController } from './gmail/gmail.controller';
+import * as winston from 'winston';
+import LokiTransport from 'winston-loki';
+
+function getTransports(): winston.transport[] {
+  const list: winston.transport[] = [];
+
+  if (process.env.LOKI_HOST) {
+    list.push(
+      new LokiTransport({
+        host: process.env.LOKI_HOST,
+        batching: true,
+        basicAuth: process.env.LOKI_BASIC_AUTH
+          ? process.env.LOKI_BASIC_AUTH
+          : undefined,
+        onConnectionError: (err) => console.error(err),
+        labels: { job: 'nestjs-logs', app: 'api', env: process.env.NODE_ENV },
+        json: true,
+      })
+    );
+  }
+  return list;
+}
 
 @Module({
   imports: [
@@ -33,8 +51,6 @@ import { User } from '../users/entities/user.entity';
     AuthModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}
