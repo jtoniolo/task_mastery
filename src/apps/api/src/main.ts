@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import session from 'express-session';
@@ -21,6 +21,10 @@ async function bootstrap() {
   });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
   app.enableCors({
     origin: process.env.CORS_ORIGINS.split(',')
       .map((origin) => origin.trim())
