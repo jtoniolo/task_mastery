@@ -10,6 +10,7 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
 
 const app = express();
+app.disable("x-powered-by");
 const commonEngine = new CommonEngine();
 
 /**
