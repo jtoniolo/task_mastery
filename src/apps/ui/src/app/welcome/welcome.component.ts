@@ -16,7 +16,7 @@ export class WelcomeComponent {
   signUpWithGoogle(): void {
     this.#facade.apiBaseUrl$.subscribe((apiBaseUrl) => {
       this.document.open(
-        apiBaseUrl + '/api/auth/google',
+        apiBaseUrl + '/auth/google',
         'Authenticate with Google',
         'width=500,height=600'
       );
