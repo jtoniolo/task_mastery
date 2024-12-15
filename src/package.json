@@ -5,7 +5,7 @@
   "scripts": {
     "b-api-dev": "nx run api:build --configuration=development",
     "s-api-dev": "nx run api:serve:development --configuration=development --watch=true",
-    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api-json -g typescript-angular -o src/apps/ui/src/app/proxy"
+    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy"
   },
   "private": true,
   "dependencies": {
