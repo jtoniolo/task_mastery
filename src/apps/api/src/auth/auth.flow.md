@@ -60,3 +60,79 @@ This document outlines the authentication flow for our API using Google OAuth2. 
 - `https://www.googleapis.com/auth/gmail.delete`: Allows deleting Gmail data.
 
 This flow ensures that users can securely authenticate using their Google accounts and access protected resources in our API.
+
+# API Authorization Logic
+
+## Overview
+This document outlines the authorization logic for our API, ensuring that users can only access their own documents/resources and no one else's. Unauthorized access attempts are properly logged and denied.
+
+## Authorization Mechanisms
+
+1. **JWT Authentication Guard**
+   - The `JwtAuthGuard` is used to authenticate users using JSON Web Tokens (JWT).
+   - It includes authorization checks to ensure users can only access their own documents/resources.
+   - Unauthorized access attempts are logged and denied.
+
+2. **Authorization Guard**
+   - The `AuthorizationGuard` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+   - Unauthorized access attempts are logged and denied.
+
+3. **Authorization Decorator**
+   - The `AuthorizationDecorator` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+
+## Configuration
+
+1. **JWT Authentication Guard**
+   - The `JwtAuthGuard` is configured in the `auth.module.ts` file.
+   - It is used to authenticate users using JSON Web Tokens (JWT).
+   - It includes authorization checks to ensure users can only access their own documents/resources.
+   - Unauthorized access attempts are logged and denied.
+
+2. **Authorization Guard**
+   - The `AuthorizationGuard` is configured in the `auth.module.ts` file.
+   - It is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+   - Unauthorized access attempts are logged and denied.
+
+3. **Authorization Decorator**
+   - The `AuthorizationDecorator` is configured in the `auth.module.ts` file.
+   - It is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+
+## Usage
+
+1. **JWT Authentication Guard**
+   - The `JwtAuthGuard` is used to authenticate users using JSON Web Tokens (JWT).
+   - It includes authorization checks to ensure users can only access their own documents/resources.
+   - Unauthorized access attempts are logged and denied.
+
+2. **Authorization Guard**
+   - The `AuthorizationGuard` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+   - Unauthorized access attempts are logged and denied.
+
+3. **Authorization Decorator**
+   - The `AuthorizationDecorator` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+
+## Example
+
+1. **JWT Authentication Guard**
+   - The `JwtAuthGuard` is used to authenticate users using JSON Web Tokens (JWT).
+   - It includes authorization checks to ensure users can only access their own documents/resources.
+   - Unauthorized access attempts are logged and denied.
+
+2. **Authorization Guard**
+   - The `AuthorizationGuard` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+   - Unauthorized access attempts are logged and denied.
+
+3. **Authorization Decorator**
+   - The `AuthorizationDecorator` is used to handle authorization logic.
+   - It ensures that each document/resource is associated with the user who owns it.
+
+## Conclusion
+
+This document outlines the authorization logic for our API, ensuring that users can only access their own documents/resources and no one else's. Unauthorized access attempts are properly logged and denied.

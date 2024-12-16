@@ -29,4 +29,7 @@ export class User {
   @Column({ nullable: true })
   @UpdateDateColumn()
   lastLogin: Date;
+
+  @Column('simple-array', { nullable: true })
+  documents: string[];
 }

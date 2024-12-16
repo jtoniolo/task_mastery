@@ -8,6 +8,8 @@ import { GoogleStrategy } from './google.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { User } from '../users/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthorizationGuard } from './authorization.guard';
+import { Public } from './authorization.decorator';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, GoogleStrategy, JwtStrategy, JwtService],
+  providers: [AuthService, GoogleStrategy, JwtStrategy, JwtService, AuthorizationGuard],
   controllers: [AuthController],
   exports: [AuthService],
 })

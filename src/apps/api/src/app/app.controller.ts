@@ -1,6 +1,7 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthorizationGuard } from '../auth/authorization.guard';
 
 @ApiTags('app')
 @Controller('app')
@@ -11,6 +12,7 @@ export class AppController {
   ) {}
 
   @Get()
+  @UseGuards(AuthorizationGuard)
   getData() {
     this.logger.log('getData method called', AppController.name);
     const data = this.appService.getData();

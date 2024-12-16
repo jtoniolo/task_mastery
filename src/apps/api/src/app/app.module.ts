@@ -12,6 +12,8 @@ import { HealthModule } from '../health/health.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerBehindProxyGuard } from '../guards/throttler-behind-proxy.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthorizationGuard } from '../auth/authorization.guard';
+import { Public } from '../auth/authorization.decorator';
 
 function getTransports(): winston.transport[] {
   const list: winston.transport[] = [];
@@ -79,6 +81,10 @@ function getTransports(): winston.transport[] {
     {
       provide: APP_GUARD,
       useClass: ThrottlerBehindProxyGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthorizationGuard,
     },
   ],
 })
