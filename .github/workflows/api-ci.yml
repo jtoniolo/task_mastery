@@ -5,6 +5,8 @@ on:
     branches:
       - dev
       - main
+    paths:
+      - "src/apps/api/**"
 
 jobs:
   build:
@@ -21,9 +23,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+        working-directory: ./src
 
       - name: Run tests
         run: npx nx run api:test:ci --skip-nx-cache
+        working-directory: ./src
 
       - name: Build API
         run: npx nx run api:build --skip-nx-cache
+        working-directory: ./src

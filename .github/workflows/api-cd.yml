@@ -3,12 +3,15 @@ name: API CD
 on:
   push:
     branches:
-      - main
-      - dev
+      - main # production
+      - dev # dev
+    paths:
+      - "src/apps/api/**"
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
     steps:
       - name: Checkout repository
@@ -21,14 +24,18 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+        working-directory: ./src
 
       - name: Build API
         run: npx nx run api:build --skip-nx-cache
+        working-directory: ./src
 
       - name: Dockerize API
         run: docker build -f apps/api/Dockerfile . -t email_sweeperr_api
+        working-directory: ./src
 
       - name: Push Docker image
         run: |
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker push email_sweeperr_api
+          echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
+          docker push ghcr.io/jtoniolo/email_sweeperr_api:${{ secrets.BRANCH_TAG }}
+        working-directory: ./src
