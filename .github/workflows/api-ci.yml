@@ -2,6 +2,9 @@ name: API CI
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - setup-github-actions
   pull_request:
     branches:
       - dev
