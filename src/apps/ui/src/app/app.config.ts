@@ -1,10 +1,7 @@
 import {
   ApplicationConfig,
   provideZoneChangeDetection,
-  provideAppInitializer,
-  inject,
   isDevMode,
-  importProvidersFrom,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
@@ -22,8 +19,6 @@ import { AppEffects } from './+state/app.effects';
 import { AppFacade } from './+state/app.facade';
 import { provideServiceWorker } from '@angular/service-worker';
 import { BASE_PATH } from './proxy';
-
-export function getConfig() {}
 
 export const appConfig: ApplicationConfig = {
   providers: [
