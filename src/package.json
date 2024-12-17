@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "b-api-dev": "nx run api:build --configuration=development",
-    "s-api-dev": "nx run api:serve:development --configuration=development --watch=true",
-    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy",
-    "build-prod": "nx run api:build --skip-nx-cache",
-    "docker-api": "nx run api:docker-build --skip-nx-cache"
+    "build-api": "nx run api:build --configuration=development",
+    "start-api": "nx run api:serve:development --configuration=development --watch=true",
+    "proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy",
+    "api-build-prod": "nx run api:build --skip-nx-cache",
+    "ui-build-prod": "nx run ui:build:production --skip-nx-cache",
+    "api-docker": "nx run api:docker-build --skip-nx-cache",
+    "ui-docker": "nx run api:docker-build --skip-nx-cache"
   },
   "private": true,
   "dependencies": {
