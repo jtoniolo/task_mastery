@@ -8,33 +8,26 @@ FROM node:current-alpine AS BUILD
 
 WORKDIR /app
 
-# RUN addgroup --system api && \
-#           adduser --system -G api api
-
 COPY ../../dist/apps/api api/
-# RUN chown -R api:api .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --prefix api --omit=dev -f install
 
-
-
 FROM node:current-alpine AS SERVE
 
 WORKDIR /app
 
-# RUN addgroup --system api && \
-#           adduser --system -G api api
+RUN addgroup --system api && \
+          adduser --system -G api api
 
 COPY --from=BUILD /app/api ./api
 COPY --from=BUILD /app/api/node_modules ./api/node_modules
 
-#RUN chown -R api:api .
-
+RUN chown -R api:api .
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-
+USER api
 CMD [ "node", "api/main.js" ]
