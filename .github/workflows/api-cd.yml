@@ -4,12 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - setup-github-actions
       - main # production
       - dev # dev
     paths:
       - "src/apps/api/**"
-      - ".github/workflows/api-cd.yml"
 
 jobs:
   build-and-deploy:
