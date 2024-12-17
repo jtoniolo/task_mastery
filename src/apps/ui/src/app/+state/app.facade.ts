@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { select, Store, Action } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import * as AppActions from './app.actions';
-import * as AppFeature from './app.reducer';
 import * as AppSelectors from './app.selectors';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class AppFacade {
    */
   loaded$ = this.store.pipe(select(AppSelectors.selectAppLoaded));
   allApp$ = this.store.pipe(select(AppSelectors.selectAllApp));
-  apiBaseUrl$ = this.store.pipe(select(AppSelectors.selectApiBaseUrl));
 
   authenticated(token: string) {
     this.store.dispatch(AppActions.authenticated({ token }));

@@ -15,7 +15,6 @@ export interface AppPartialState {
 }
 
 export const initialAppState: AppState = {
-  apiBaseUrl: '',
   title: 'Email Sweeperr',
 } as AppState;
 
@@ -24,7 +23,6 @@ const reducer = createReducer(
   on(AppActions.initApp, (state) => ({ ...state, loaded: false, error: null })),
   on(AppActions.loadAppSuccess, (state, { app }) => ({
     ...state,
-    apiBaseUrl: app.apiBaseUrl,
     title: app.title || state.title,
     loaded: true,
   })),

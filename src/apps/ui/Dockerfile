@@ -10,20 +10,19 @@ WORKDIR /app
 COPY ../../dist/apps/ui ./ui
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix ./ui --omit=dev install
+#RUN npm --prefix ./ui --omit=dev install
 
 FROM node:current-alpine AS SERVE
 
 WORKDIR /app
 COPY --from=BUILD /app/ui ./ui
-#COPY --from=BUILD /app/ui/node_modules ./ui/node_modules
 
 RUN addgroup --system ui && \
-    adduser --system -G ui ui
+    adduser --system -G ui ui && \
+    chown -R ui:ui ./ui
 
-RUN chown -R ui:ui ./ui
-
+EXPOSE 4200
 ENV HOST=0.0.0.0
 ENV PORT=4200
 USER ui
-CMD [ "npx", "ng", "serve", "--host", "0.0.0.0", "--port", "4200" ]
+CMD [ "node", "ui/server/server.mjs" ]

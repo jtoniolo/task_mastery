@@ -5,6 +5,7 @@
   "scripts": {
     "build-api": "nx run api:build --configuration=development",
     "start-api": "nx run api:serve:development --configuration=development --watch=true",
+    "start-iu": "nx run ui:serve:development",
     "proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy",
     "api-build-prod": "nx run api:build --skip-nx-cache",
     "ui-build-prod": "nx run ui:build:production --skip-nx-cache",
