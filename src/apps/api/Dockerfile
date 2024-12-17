@@ -22,7 +22,7 @@ RUN addgroup --system api && \
           adduser --system -G api api
 
 COPY --from=BUILD /app/api ./api
-COPY --from=BUILD /app/api/node_modules ./api/node_modules
+#COPY --from=BUILD /app/api/node_modules ./api/node_modules
 
 RUN chown -R api:api .
 
