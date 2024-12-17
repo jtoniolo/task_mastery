@@ -5,7 +5,9 @@
   "scripts": {
     "b-api-dev": "nx run api:build --configuration=development",
     "s-api-dev": "nx run api:serve:development --configuration=development --watch=true",
-    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy"
+    "gen-proxy": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-angular -o apps/ui/src/app/proxy",
+    "build-prod": "nx run api:build --skip-nx-cache",
+    "docker-api": "nx run api:docker-build --skip-nx-cache"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +34,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^8.1.0",
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^6.3.0",
     "@nestjs/typeorm": "^10.0.2",
@@ -69,7 +72,6 @@
     "@angular/compiler-cli": "~19.0.0",
     "@angular/language-service": "~19.0.0",
     "@nestjs/schematics": "^10.0.1",
-    "@nestjs/swagger": "^8.1.0",
     "@nestjs/testing": "^10.0.2",
     "@ngrx/schematics": "^18.0.2",
     "@ngrx/store-devtools": "^18.0.2",
