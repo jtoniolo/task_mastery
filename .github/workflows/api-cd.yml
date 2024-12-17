@@ -1,6 +1,7 @@
 name: API CD
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - setup-github-actions
@@ -8,6 +9,7 @@ on:
       - dev # dev
     paths:
       - "src/apps/api/**"
+      - ".github/workflows/api-cd.yml"
 
 jobs:
   build-and-deploy:
