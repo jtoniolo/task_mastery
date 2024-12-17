@@ -3,6 +3,7 @@ name: API CD
 on:
   push:
     branches:
+      - setup-github-actions
       - main # production
       - dev # dev
     paths:
