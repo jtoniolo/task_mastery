@@ -21,8 +21,16 @@ jobs:
         with:
           node-version: "23"
 
+      - name: pwd
+        run: pwd
+        working-directory: ./src
+
       - name: Install dependencies
         run: yarn
+        working-directory: ./src
+
+      - name: list files
+        run: ls -la
         working-directory: ./src
 
       - name: Run tests
