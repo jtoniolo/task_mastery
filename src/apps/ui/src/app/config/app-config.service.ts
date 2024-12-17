@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { AppConfig } from './app-config';
 
 @Injectable({
@@ -11,10 +11,16 @@ export class AppConfigService {
   private appConfig = {} as AppConfig;
 
   loadAppConfig(): Observable<AppConfig> {
+    console.log('Loading app config...');
     return this.http.get('/config.json').pipe(
       map((data) => {
         this.appConfig = data as AppConfig;
+        console.log('App config loaded:', this.appConfig);
         return data as AppConfig;
+      }),
+      catchError((error) => {
+        console.error('Error loading app config:', error);
+        return of({} as AppConfig);
       })
     );
 
@@ -22,14 +28,6 @@ export class AppConfigService {
     // return of({
     //   apiBaseUrl: 'http://localhost:3000',
     // });
-  }
-
-  get apiBaseUrl(): string {
-    if (!this.appConfig) {
-      throw Error('Config file not loaded!');
-    }
-
-    return this.appConfig.apiBaseUrl;
   }
 
   get config(): AppConfig {

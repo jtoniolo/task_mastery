@@ -1,3 +1,1 @@
-export interface AppConfig {
-  apiBaseUrl: string;
-}
+export interface AppConfig {}

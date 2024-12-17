@@ -1,10 +1,6 @@
-import { AppConfigService } from './config/app-config.service';
-
 import {
   ApplicationConfig,
   provideZoneChangeDetection,
-  provideAppInitializer,
-  inject,
   isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -22,16 +18,14 @@ import * as fromApp from './+state/app.reducer';
 import { AppEffects } from './+state/app.effects';
 import { AppFacade } from './+state/app.facade';
 import { provideServiceWorker } from '@angular/service-worker';
+import { BASE_PATH } from './proxy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideEffects(AppEffects),
     provideState(fromApp.APP_FEATURE_KEY, fromApp.appReducer),
     AppFacade,
-    // provideAppInitializer(() => {
-    //   const appConfigService = inject(AppConfigService);
-    //   return appConfigService.loadAppConfig();
-    // }),
+    { provide: BASE_PATH, useValue: '' },
     provideStore(),
     provideStoreDevtools({ logOnly: !isDevMode() }),
     provideEffects(),

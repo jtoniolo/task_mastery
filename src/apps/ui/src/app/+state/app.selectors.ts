@@ -18,8 +18,3 @@ export const selectAllApp = createSelector(
   selectAppState,
   (state: AppState) => state
 );
-
-export const selectApiBaseUrl = createSelector(
-  selectAppState,
-  (state: AppState) => state.apiBaseUrl
-);
