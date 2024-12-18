@@ -31,7 +31,7 @@ jobs:
         working-directory: ./src
 
       - name: Dockerize UI
-        run: docker build -f apps/api/Dockerfile . -t ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
+        run: docker build -f apps/ui/Dockerfile . -t ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
         working-directory: ./src
 
       - name: Push Docker image
