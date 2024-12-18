@@ -7,7 +7,7 @@
 FROM node:current-alpine AS BUILD
 
 WORKDIR /app
-COPY ../../dist/apps/ui ./ui
+COPY ../../dist/apps/ui ui/
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 #RUN npm --prefix ./ui --omit=dev install

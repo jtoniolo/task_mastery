@@ -31,12 +31,17 @@ jobs:
         run: npx nx run api:build --skip-nx-cache
         working-directory: ./src
 
-      - name: Dockerize API
-        run: docker build -f apps/api/Dockerfile . -t ghcr.io/jtoniolo/email_sweeperr_api:${{ vars.BRANCH_TAG }}
-        working-directory: ./src
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.TOKEN }}
 
-      - name: Push Docker image
-        run: |
-          echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
-          docker push ghcr.io/jtoniolo/email_sweeperr_api:${{ vars.BRANCH_TAG }}
-        working-directory: ./src
+      - name: Build Image
+        uses: docker/build-push-action@v6
+        with:
+          file: ./src/apps/ui/Dockerfile
+          context: ./src
+          push: true
+          tags: ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
