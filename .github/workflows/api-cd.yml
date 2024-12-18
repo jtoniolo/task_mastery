@@ -1,0 +1,42 @@
+name: API CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main # production
+      - dev # dev
+    paths:
+      - "src/apps/api/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "23"
+
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./src
+
+      - name: Build API
+        run: npx nx run api:build --skip-nx-cache
+        working-directory: ./src
+
+      - name: Dockerize API
+        run: docker build -f apps/api/Dockerfile . -t ghcr.io/jtoniolo/email_sweeperr_api:${{ vars.BRANCH_TAG }}
+        working-directory: ./src
+
+      - name: Push Docker image
+        run: |
+          echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
+          docker push ghcr.io/jtoniolo/email_sweeperr_api:${{ vars.BRANCH_TAG }}
+        working-directory: ./src

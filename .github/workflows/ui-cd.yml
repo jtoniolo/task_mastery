@@ -1,0 +1,41 @@
+name: UI CD
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - "src/apps/ui/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "23"
+
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ./src
+
+      - name: Build UI
+        run: npx nx run ui:build:production --skip-nx-cache
+        working-directory: ./src
+
+      - name: Dockerize UI
+        run: docker build -f apps/api/Dockerfile . -t ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
+        working-directory: ./src
+
+      - name: Push Docker image
+        run: |
+          echo ${{ secrets.TOKEN }} | docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
+          docker push ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
+        working-directory: ./src
