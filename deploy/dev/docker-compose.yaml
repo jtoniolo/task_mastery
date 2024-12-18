@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  dev-api:
+    container_name: dev-email-sweeperr-api
+    image: ghcr.io/jtoniolo/email_sweeperr_api:dev
+    depends_on:
+      - dev-mongo
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+
+  dev-client:
+    container_name: dev-email-sweeperr-client
+    image: ghcr.io/jtoniolo/email_sweeperr_client:dev
+    depends_on:
+      - dev-api
+    ports:
+      - "4200:4200"
+
+  dev-mongo:
+    container_name: dev-email-sweeperr-mongo
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
