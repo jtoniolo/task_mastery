@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   dev-api:
@@ -7,8 +7,19 @@ services:
     depends_on:
       - dev-mongo
     environment:
-      - MONGODB_URI=${MONGODB_URI}
+      - CLIENT_URL=${CLIENT_URL}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - GMAIL_BATCH_SIZE=${GMAIL_BATCH_SIZE}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - LOKI_BASIC_AUTH=${LOKI_BASIC_AUTH}
+      - LOKI_HOST=${LOKI_HOST}
       - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+      - MONGODB_URI=${MONGODB_URI}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - TRUSTED_PROXIES=${TRUSTED_PROXIES}
 
   dev-client:
     container_name: dev-email-sweeperr-client
