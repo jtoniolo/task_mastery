@@ -8,7 +8,7 @@ import { AppConfig } from './app-config';
 })
 export class AppConfigService {
   private readonly http = inject(HttpClient);
-  private appConfig = {} as AppConfig;
+  private appConfig: AppConfig | undefined;
 
   loadAppConfig(): Observable<AppConfig> {
     console.log('Loading app config...');
@@ -31,7 +31,7 @@ export class AppConfigService {
   }
 
   get config(): AppConfig {
-    return this.appConfig;
+    return this.appConfig || ({} as AppConfig);
   }
 
   get isLoaded(): boolean {

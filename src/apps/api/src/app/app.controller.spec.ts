@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 
 describe('AppController', () => {
   let app: INestApplication;
@@ -21,6 +21,7 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [
         AppService,
+        Logger,
         {
           provide: APP_GUARD,
           useClass: ThrottlerGuard,
