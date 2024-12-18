@@ -3,11 +3,9 @@ import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { RouterModule } from '@angular/router';
 import { AppFacade } from './+state/app.facade';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('AppComponent', () => {
-  const initialState = { title: 'ui' };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, NxWelcomeComponent, RouterModule.forRoot([])],
