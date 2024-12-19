@@ -14,10 +14,10 @@ export class AppEffects {
     this.actions$.pipe(
       ofType(AppActions.initApp),
       exhaustMap(() =>
-        this.appConfigService.loadAppConfig().pipe(
+        of(this.appConfigService.config).pipe(
           map((config: AppConfig) =>
             AppActions.loadAppSuccess({
-              app: { title: '' },
+              app: { ...config },
             })
           ),
           catchError((error) => of(AppActions.loadAppFailure({ error })))
