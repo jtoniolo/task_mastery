@@ -1,16 +1,44 @@
-# email_sweeperr
+# TaskMastery
 
 ## Project Description
 
-The project aims to build an open-source alternative to Clean.Email, with additional tools for organizing and cleaning out inboxes. My personal inbox is in sore need of some tidying up!
+Welcome to TaskMastery, an open-source productivity assistant designed to help you effortlessly organize and manage your digital life. Our MVP focuses on creating a powerful alternative to Clean.Email, providing additional tools to declutter and organize your inbox efficiently.
 
-## Purpose
+## Project Purpose
+I’m writing this app to familiarize myself with NestJS and v19 of Angular. One of the reasons I’ve picked TypeScript/Node for the API is lower development overhead, given the small scope of this project. I’m already familiar with Angular and prefer its more OOPy approach.
 
-I'm writing this app to familiarize myself with NestJS and v19 of Angular. One of the reasons I've picked TypeScript/Node for the API is lower development overhead, given the small scope of this project. I'm already familiar with Angular and prefer its more OOPy approach.
+Stay tuned as we expand TaskMastery to become your ultimate productivity companion!
 
-## Scope
+## MVP Features
+- **Inbox Organization**: Automatically sort, label, and archive emails to keep your inbox clean and manageable.
+- **Unsubscribe Management**: Easily unsubscribe from unwanted newsletters and promotions.
+- **Label Management**: Streamline and customize your email labels for better organization.
 
-The scope of the project is to build a tool for cleaning out Gmail inboxes. The project will be a contribution to the self-hosted community. The app will include various filters and groupings to find and action emails (archive, delete, label, auto-unsubscribe). These will include older than; between dates; group by sender; group by sender domain; group by label. We will include a subject preview for groupings to allow for "surgical" cleaning instead of just bulk cleaning. The project will also include a module for organizing and cleaning labels (merge, delete, add, etc...)
+### Scope of the Project
+The scope of TaskMastery is to build a tool for cleaning out Gmail inboxes, aimed at contributing to the self-hosted community. The app will include various filters and groupings to find and action emails (archive, delete, label, auto-unsubscribe). These will include:
+
+- **Older Than**: Find and action emails older than a specified date.
+- **Between Dates**: Filter emails within a specific date range.
+- **Group by Sender**: Organize emails by individual senders.
+- **Group by Sender Domain**: Group emails from the same domain.
+- **Group by Label**: Sort emails based on existing labels.
+
+We will include a subject preview for groupings to allow for "surgical" cleaning instead of just bulk cleaning. Additionally, the project will feature a module for organizing and cleaning labels (merge, delete, add, etc.).
+
+## Future Enhancements
+Looking ahead, TaskMastery aims to integrate with various tools and platforms to further enhance personal productivity:
+
+- **YNAB Integration**: Automate and improve financial tracking with enhanced reporting and subscription management.
+- **PaperlessNgx Integration**: Automatically file attachments from your email for seamless document management.
+- **Google Calendar Integration**: Smart scheduling and task management to optimize your daily routine.
+- **Personal Chore Management**: Comprehensive personal task and chore management to keep your home life organized.
+
+## Stack
+
+- **Backend**: NestJS, TypeScript, Node.js
+- **Frontend**: Angular v19
+- **Database**: MongoDB
+- **Tests**: Jest
 
 ## Getting Started
 
@@ -48,12 +76,6 @@ The scope of the project is to build a tool for cleaning out Gmail inboxes. The 
    ```
 
 2. Open your browser and navigate to `http://localhost:3000`.
-
-## Stack
-
-- **Backend**: NestJS, TypeScript, Node.js
-- **Frontend**: Angular v19
-- **Database**: MongoDB
 
 ## Logging Configuration and Usage
 
