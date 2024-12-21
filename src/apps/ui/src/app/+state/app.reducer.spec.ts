@@ -1,5 +1,4 @@
 import * as AppActions from './app.actions';
-import { AppEntity } from './app.models';
 import { AppState, initialAppState, appReducer } from './app.reducer';
 
 describe('App Reducer', () => {
