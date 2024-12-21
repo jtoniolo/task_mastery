@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".",
+    },
+    {
+      "name": "client",
+      "path": "apps/client",
+    },
+    {
+      "name": "api",
+      "path": "apps/api",
+    },
+  ],
+  "settings": {
+    "nxConsole.nxWorkspacePath": "src",
+    "jest.disabledWorkspaceFolders": ["root"],
+  },
+}
