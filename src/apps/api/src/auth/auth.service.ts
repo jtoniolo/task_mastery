@@ -4,7 +4,11 @@ import { generateFromEmail } from 'unique-username-generator';
 import { User } from '../users/entities/user.entity';
 import { RegisterUserDto } from './dtos/auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, InternalServerErrorException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  Injectable,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 /**
@@ -13,8 +17,8 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
-    @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
   ) {}
 
