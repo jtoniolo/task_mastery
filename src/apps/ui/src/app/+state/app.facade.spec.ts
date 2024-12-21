@@ -34,7 +34,7 @@ describe('AppFacade', () => {
   });
 
   it('allApp$ should select all app state', (done) => {
-    const expected: AppState = { loaded: true, title: '' };
+    const expected: AppState = { loaded: true, title: '', apiBaseUrl: '' };
     store.overrideSelector(AppSelectors.selectAllApp, expected);
 
     facade.allApp$.subscribe((allApp) => {

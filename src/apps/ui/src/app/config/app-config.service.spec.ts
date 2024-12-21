@@ -1,54 +1,60 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
 import { AppConfigService } from './app-config.service';
 import { AppConfig } from './app-config';
-import { provideHttpClient } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 
 describe('AppConfigService', () => {
-  let service: AppConfigService;
-  let httpMock: HttpTestingController;
+  let doc: Document;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
-      providers: [
-        AppConfigService,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [AppConfigService],
     });
-
-    service = TestBed.inject(AppConfigService);
-    httpMock = TestBed.inject(HttpTestingController);
+    doc = TestBed.inject(DOCUMENT);
   });
 
-  afterEach(() => {
-    httpMock.verify();
+  it('should be created', () => {
+    let service = TestBed.inject(AppConfigService);
+    expect(service).toBeTruthy();
   });
 
-  it('should return the app config', () => {
-    const mockConfig: AppConfig | undefined = {
-      apiBaseUrl: 'http://localhost:3000',
+  it('should return default config if window.EmailSweeper is not defined', () => {
+    const defaultConfig: AppConfig = {
+      title: 'Email Sweeper',
+      apiBaseUrl: '',
+      isFromDefault: true,
     };
-    service['appConfig'] = mockConfig;
+
+    let service = TestBed.inject(AppConfigService);
+    expect(service.config).toEqual(defaultConfig);
+  });
+
+  it('should return window.EmailSweeper config if defined', () => {
+    const mockConfig: AppConfig = {
+      title: 'Email Sweeper',
+      apiBaseUrl: 'http://example.com',
+      isFromDefault: false,
+    };
+    const win = doc.defaultView as any;
+    win.EmailSweeper = mockConfig;
+
+    // Reinitialize the service to pick up the new window.EmailSweeper value
+    let service = TestBed.inject(AppConfigService);
 
     expect(service.config).toEqual(mockConfig);
   });
 
-  it('should return an empty object if app config is not set', () => {
-    expect(service.config).toEqual({} as AppConfig);
-  });
-
-  it('should return true if config is loaded', () => {
-    service['appConfig'] = { apiBaseUrl: 'http://localhost:3000' };
+  it('should return true for isLoaded if config is defined', () => {
+    let service = TestBed.inject(AppConfigService);
     expect(service.isLoaded).toBeTruthy();
   });
 
-  it('should return false if config is not loaded', () => {
-    service['appConfig'] = undefined;
+  it('should return false for isLoaded if config is not defined', () => {
+    (window as any).EmailSweeper = undefined;
+    let service = TestBed.inject(AppConfigService);
+
+    // Reinitialize the service to pick up the new window.EmailSweeper value
+
     expect(service.isLoaded).toBeFalsy();
   });
 });

@@ -8,6 +8,7 @@ import { AppState } from './app.reducer';
 
 describe('App Selectors', () => {
   const initialState: AppState = {
+    apiBaseUrl: '',
     loaded: false,
     error: null,
     title: 'Test Title',

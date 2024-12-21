@@ -1,52 +1,52 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
-import { hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
-
-import * as AppActions from './app.actions';
+import { Action } from '@ngrx/store';
 import { AppEffects } from './app.effects';
+import { initApp, loadAppSuccess } from './app.actions';
 import { AppConfigService } from '../config/app-config.service';
+import { Injectable } from '@angular/core';
 import { AppConfig } from '../config/app-config';
 
-jest.mock('../config/app-config.service');
-
 describe('AppEffects', () => {
-  let actions: Observable<Action>;
+  let actions$ = new Observable<Action>();
   let effects: AppEffects;
-  let appConfigService: jest.Mocked<AppConfigService>;
-  const mockAppConfig: AppConfig = {
-    apiUrl: 'https://api.example.com',
-    featureFlag: true,
-  };
+  let config = { title: 'New Title', apiBaseUrl: 'http://example.com' };
+  @Injectable()
+  class MockAppConfigService {
+    get config(): AppConfig {
+      return config;
+    }
+  }
+
+  TestBed.configureTestingModule({
+    providers: [provideMockActions(() => actions$)],
+  });
 
   beforeEach(() => {
-    appConfigService = new AppConfigService() as jest.Mocked<AppConfigService>;
-    appConfigService.loadAppConfig.mockReturnValue(of(mockAppConfig));
-
     TestBed.configureTestingModule({
-      imports: [],
       providers: [
         AppEffects,
-        provideMockActions(() => actions),
-        provideMockStore(),
-        { provide: AppConfigService, useValue: appConfigService },
+        {
+          provide: AppConfigService,
+          useClass: MockAppConfigService,
+        },
       ],
     });
 
     effects = TestBed.inject(AppEffects);
   });
 
-  describe('init$', () => {
-    it('should work', () => {
-      actions = hot('-a-|', { a: AppActions.initApp() });
+  it('init$ should return loadAppSuccess', () => {
+    // Arrange
+    const expectedAction = loadAppSuccess({ app: { ...config } });
 
-      const expected = hot('-a-|', {
-        a: AppActions.loadAppSuccess({ app: { title: '' } }),
-      });
+    //Act
+    actions$ = of(initApp());
 
-      expect(effects.init$).toBeObservable(expected);
+    //Assert
+    effects.init$.subscribe((x) => {
+      expect(x).toEqual(expectedAction);
     });
   });
 });

@@ -4,15 +4,17 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
 
 const app = express();
-app.disable("x-powered-by");
+app.disable('x-powered-by');
 const commonEngine = new CommonEngine();
 
+const apiUrl = process.env['API_URL'] ?? 'http://localhost:3000';
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -26,6 +28,17 @@ const commonEngine = new CommonEngine();
  */
 
 /**
+ * Proxy API requests
+ */
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: apiUrl,
+    changeOrigin: true,
+  })
+);
+
+/**
  * Serve static files from /browser
  */
 app.get(
@@ -33,7 +46,7 @@ app.get(
   express.static(browserDistFolder, {
     maxAge: '1y',
     index: 'index.html',
-  }),
+  })
 );
 
 /**

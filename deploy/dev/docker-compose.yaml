@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  dev-api:
+    container_name: dev-email-sweeperr-api
+    image: ghcr.io/jtoniolo/email_sweeperr_api:dev
+    depends_on:
+      - dev-mongo
+    environment:
+      - CLIENT_URL=${CLIENT_URL}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - GMAIL_BATCH_SIZE=${GMAIL_BATCH_SIZE}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - LOKI_BASIC_AUTH=${LOKI_BASIC_AUTH}
+      - LOKI_HOST=${LOKI_HOST}
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+      - MONGODB_URI=${MONGODB_URI}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - TRUSTED_PROXIES=${TRUSTED_PROXIES}
+
+  dev-client:
+    container_name: dev-email-sweeperr-client
+    image: ghcr.io/jtoniolo/email_sweeperr_client:dev
+    depends_on:
+      - dev-api
+    ports:
+      - "4200:4200"
+
+  dev-mongo:
+    container_name: dev-email-sweeperr-mongo
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
