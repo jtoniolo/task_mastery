@@ -9,5 +9,8 @@
   "workspaces": [
     "apps/*",
     "libs/*"
-  ]
+  ],
+  "scripts": {
+    "build:api": "yarn workspace task_mastery_api build"
+  }
 }

@@ -1,25 +1,24 @@
 FROM node:alpine AS BUILD
 
-WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
-
-# Install the application dependencies
-RUN npm install --force
+WORKDIR /build
 
 # Copy the rest of the application files
 COPY . .
 
-# Install the NestJS CLI and build the application, then remove the CLI
-RUN npm run build
-    
+# Install the application dependencies
+RUN yarn --prod --frozen-lockfile && \
+    yarn add @nestjs/cli && \
+    yarn build && \
+    yarn remove @nestjs/cli
 
+
+# Final image
 FROM node:alpine AS SERVE
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY --from=BUILD /usr/src/app ./
+COPY --from=BUILD /build/dist/src ./api
+COPY --from=BUILD /build/node_modules ./node_modules
 
 RUN addgroup --system api && \
     adduser --system -G api api && \
@@ -27,12 +26,11 @@ RUN addgroup --system api && \
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
-#ENV NODE_PATH=/app/node_modules
 EXPOSE 3000
 
 USER api
 
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-#   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health/liveness || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health/liveness || exit 1
 
 ENTRYPOINT [ "node", "./api/main" ]
