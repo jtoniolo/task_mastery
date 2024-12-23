@@ -1,0 +1,16 @@
+{
+  "name": "task_mastery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jtoniolo/task_mastery.git",
+  "author": "Jeffrey Toniolo <6921365+jtoniolo@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build:api": "yarn workspace task_mastery_api build"
+  }
+}

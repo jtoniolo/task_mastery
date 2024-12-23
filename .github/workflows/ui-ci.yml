@@ -7,14 +7,14 @@ on:
       - dev
       - main
     paths:
-      - "src/apps/ui/**"
+      - "apps/client/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./src
+        working-directory: apps/client
 
     steps:
       - name: Checkout repository
@@ -27,12 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-        working-directory: ./src
+        working-directory: apps/client
 
       - name: Run tests
-        run: npx nx run ui:test:ci --skip-nx-cache
-        working-directory: ./src
+        run: yarn test:cov
+        working-directory: apps/client
 
       - name: Build UI
-        run: npx nx run ui:build:production --skip-nx-cache
-        working-directory: ./src
+        run: yarn build
+        working-directory: apps/client

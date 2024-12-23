@@ -7,7 +7,7 @@ on:
       - main # production
       - dev # dev
     paths:
-      - "src/apps/api/**"
+      - "apps/api/**"
 
 jobs:
   build-and-deploy:
@@ -23,14 +23,6 @@ jobs:
         with:
           node-version: "23"
 
-      - name: Install dependencies
-        run: yarn
-        working-directory: ./src
-
-      - name: Build API
-        run: npx nx run api:build --skip-nx-cache
-        working-directory: ./src
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -41,7 +33,7 @@ jobs:
       - name: Build Image
         uses: docker/build-push-action@v6
         with:
-          file: ./src/apps/ui/Dockerfile
-          context: ./src
+          file: Dockerfile
+          context: apps/api
           push: true
           tags: ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
