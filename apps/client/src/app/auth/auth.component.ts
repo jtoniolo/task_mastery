@@ -9,7 +9,7 @@ import { AppFacade } from '../+state/app.facade';
 })
 export class AuthComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
-  #facade = inject(AppFacade);
+  readonly #facade = inject(AppFacade);
 
   ngOnInit(): void {
     // Get the token from the URL the Angular way
