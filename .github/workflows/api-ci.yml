@@ -7,7 +7,7 @@ on:
       - dev
       - main
     paths:
-      - "src/apps/api/**"
+      - "apps/api/**"
 
 jobs:
   build:
@@ -24,20 +24,20 @@ jobs:
 
       - name: pwd
         run: pwd
-        working-directory: ./src
+        working-directory: apps/api
 
       - name: Install dependencies
         run: yarn
-        working-directory: ./src
+        working-directory: apps/api
 
       - name: list files
         run: ls -la
-        working-directory: ./src
+        working-directory: apps/api
 
       - name: Run tests
         run: npx nx run api:test:ci --skip-nx-cache
-        working-directory: ./src
+        working-directory: apps/api
 
       - name: Build API
         run: npx nx run api:build --skip-nx-cache
-        working-directory: ./src
+        working-directory: apps/api
