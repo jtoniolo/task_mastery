@@ -40,7 +40,6 @@ jobs:
       - name: Build Image
         uses: docker/build-push-action@v6
         with:
-          file: Dockerfile
           context: apps/client
           push: true
           tags: ghcr.io/jtoniolo/email_sweeperr_client:${{ vars.BRANCH_TAG }}
