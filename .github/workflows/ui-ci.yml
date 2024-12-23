@@ -30,9 +30,9 @@ jobs:
         working-directory: apps/client
 
       - name: Run tests
-        run: npx nx run ui:test:ci --skip-nx-cache
+        run: yarn test:cov
         working-directory: apps/client
 
       - name: Build UI
-        run: npx nx run ui:build:production --skip-nx-cache
+        run: yarn build
         working-directory: apps/client

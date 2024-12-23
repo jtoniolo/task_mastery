@@ -27,7 +27,7 @@ jobs:
         working-directory: apps/client
 
       - name: Build UI
-        run: npx nx run ui:build:production --skip-nx-cache
+        run: yarn build
         working-directory: apps/client
 
       - name: Login to Docker Hub
