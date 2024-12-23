@@ -9,62 +9,63 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
-
-const app = express();
 const commonEngine = new CommonEngine();
 
 const apiUrl = process.env['API_URL'] ?? 'http://localhost:3000';
-/**
- * Proxy API requests
- */
-app.use(
-  '/api',
-  createProxyMiddleware({
-    target: apiUrl,
-    changeOrigin: true,
-  }),
-);
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+const app = express()
+  .disable('x-powered-by')
+  /**
+   * Proxy API requests
+   */
+  .use(
+    '/api',
+    createProxyMiddleware({
+      target: apiUrl,
+      changeOrigin: true,
+    }),
+  )
 
-/**
- * Serve static files from /browser
- */
-app.get(
-  '**',
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }),
-);
+  /**
+   * Example Express Rest API endpoints can be defined here.
+   * Uncomment and define endpoints as necessary.
+   *
+   * Example:
+   * ```ts
+   * app.get('/api/**', (req, res) => {
+   *   // Handle API request
+   * });
+   * ```
+   */
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
-app.get('**', (req, res, next) => {
-  const { protocol, originalUrl, baseUrl, headers } = req;
+  /**
+   * Serve static files from /browser
+   */
+  .get(
+    '**',
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+      index: 'index.html',
+    }),
+  )
 
-  commonEngine
-    .render({
-      bootstrap,
-      documentFilePath: indexHtml,
-      url: `${protocol}://${headers.host}${originalUrl}`,
-      publicPath: browserDistFolder,
-      providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-    })
-    .then((html) => res.send(html))
-    .catch((err) => next(err));
-});
+  /**
+   * Handle all other requests by rendering the Angular application.
+   */
+  .get('**', (req, res, next) => {
+    const { protocol, originalUrl, baseUrl, headers } = req;
+
+    commonEngine
+      .render({
+        bootstrap,
+        documentFilePath: indexHtml,
+        url: `${protocol}://${headers.host}${originalUrl}`,
+        publicPath: browserDistFolder,
+        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
+      })
+      .then((html) => res.send(html))
+      .catch((err) => next(err));
+  });
 
 /**
  * Start the server if this module is the main entry point.
