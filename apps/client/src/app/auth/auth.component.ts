@@ -1,4 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  afterNextRender,
+  Component,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppFacade } from '../+state/app.facade';
 
@@ -8,12 +15,23 @@ import { AppFacade } from '../+state/app.facade';
   styles: ``,
 })
 export class AuthComponent implements OnInit {
+  private readonly facade = inject(AppFacade);
+  private readonly platformId: Object = inject(PLATFORM_ID);
   private readonly route = inject(ActivatedRoute);
-  readonly #facade = inject(AppFacade);
 
   ngOnInit(): void {
-    // Get the token from the URL the Angular way
-    this.#facade.authenticated('token');
-    if (window.close) window.close();
+    this.route.queryParams.subscribe((params) => {
+      const token = params['access_token'];
+      if (token) {
+        this.facade.authenticated(token);
+        if (isPlatformBrowser(this.platformId)) {
+          // Get the token from the URL the Angular way
+          console.log('Authenticated!');
+          if (window.close) window.close();
+        }
+      } else {
+        console.error('No token found in the URL');
+      }
+    });
   }
 }

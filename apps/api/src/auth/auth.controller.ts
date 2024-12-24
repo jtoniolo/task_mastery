@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from './google-oauth.guard';
@@ -7,7 +7,10 @@ import { ApiFoundResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly logger: Logger,
+  ) {}
 
   @Get('google')
   @ApiFoundResponse({ description: 'Redirects to Google OAuth' })
@@ -24,11 +27,14 @@ export class AuthController {
     const token = await this.authService.signIn(req.user);
 
     res.cookie('access_token', token, {
+      httpOnly: true,
       maxAge: 2592000000,
-      sameSite: true,
+      sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
     });
 
-    return res.redirect(process.env.CLIENT_URL + '/auth');
+    this.logger.log('redirect to: ' + process.env.CLIENT_URL + '/auth');
+    console.log('redirect to: ' + process.env.CLIENT_URL + '/auth');
+    return res.redirect(process.env.CLIENT_URL + '/auth?access_token=' + token);
   }
 }

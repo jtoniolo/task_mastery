@@ -7833,6 +7833,13 @@ nest-winston@^1.9.7:
   dependencies:
     fast-safe-stringify "^2.1.1"
 
+ngx-cookie-service-ssr@^19.0.0:
+  version "19.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-cookie-service-ssr/-/ngx-cookie-service-ssr-19.0.0.tgz#44ea63cb32165874bc6c8a84ede577ef17a5f91e"
+  integrity sha512-t6z3eePPfJvwVsOGsEFADIJzWLFfeSCCX93LyygU+VWAZBlKSWmy/TGS4Pq7h+ZdDN5h15qw7RJ66bVsM+LM8Q==
+  dependencies:
+    tslib "^2.8.0"
+
 node-abort-controller@^3.0.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.1.1.tgz#a94377e964a9a37ac3976d848cb5c765833b8548"
@@ -9859,7 +9866,7 @@ tsconfig-paths@4.2.0, tsconfig-paths@^4.1.2, tsconfig-paths@^4.2.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@2.8.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.5.0, tslib@^2.6.2:
+tslib@2.8.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.5.0, tslib@^2.6.2, tslib@^2.8.0:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==

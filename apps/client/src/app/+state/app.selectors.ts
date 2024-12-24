@@ -6,15 +6,25 @@ export const selectAppState = createFeatureSelector<AppState>(APP_FEATURE_KEY);
 
 export const selectAppLoaded = createSelector(
   selectAppState,
-  (state: AppState) => state.loaded
+  (state: AppState) => state.loaded,
 );
 
 export const selectAppError = createSelector(
   selectAppState,
-  (state: AppState) => state.error
+  (state: AppState) => state.error,
 );
 
 export const selectAllApp = createSelector(
   selectAppState,
-  (state: AppState) => state
+  (state: AppState) => state,
+);
+
+export const selectApiBaseUrl = createSelector(
+  selectAppState,
+  (state: AppState) => state.apiBaseUrl,
+);
+
+export const selectAuthToken = createSelector(
+  selectAppState,
+  (state: AppState) => state.token,
 );

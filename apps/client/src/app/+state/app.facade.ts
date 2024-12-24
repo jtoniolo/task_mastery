@@ -14,6 +14,8 @@ export class AppFacade {
    */
   loaded$ = this.store.pipe(select(AppSelectors.selectAppLoaded));
   allApp$ = this.store.pipe(select(AppSelectors.selectAllApp));
+  authToken$ = this.store.pipe(select(AppSelectors.selectAuthToken));
+  apiBaseUrl$ = this.store.pipe(select(AppSelectors.selectApiBaseUrl));
 
   authenticated(token: string) {
     this.store.dispatch(AppActions.authenticated({ token }));
