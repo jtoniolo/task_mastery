@@ -9,11 +9,13 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerBehindProxyGuard } from './middleware/throttler-behind-proxy.guard';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
+import { UserModule } from 'users/user.module';
 
 @Module({
   imports: [
     HealthModule,
     AuthModule,
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.dev.local', '.env.dev', '.env'],
@@ -49,6 +51,7 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     AppService,
+
     Logger,
     {
       provide: APP_GUARD,

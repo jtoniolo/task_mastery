@@ -15,6 +15,7 @@ const apiUrl = process.env['API_URL'] ?? 'http://localhost:3000';
 
 const app = express()
   .disable('x-powered-by')
+
   /**
    * Proxy API requests
    */

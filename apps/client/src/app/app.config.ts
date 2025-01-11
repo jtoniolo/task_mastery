@@ -3,6 +3,8 @@ import {
   provideZoneChangeDetection,
   isDevMode,
   inject,
+  importProvidersFrom,
+  provideAppInitializer,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -12,31 +14,56 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideStore, provideState } from '@ngrx/store';
+import {
+  provideStore,
+  provideState,
+  ActionReducer,
+  MetaReducer,
+} from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideServiceWorker } from '@angular/service-worker';
-import * as fromApp from './+state/app.reducer';
+import { appReducer, APP_FEATURE_KEY } from './+state/app.reducer';
 import { AppEffects } from './+state/app.effects';
 import { AppFacade } from './+state/app.facade';
-import { BASE_PATH } from './proxy';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ApiModule, BASE_PATH } from './proxy';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { AppConfigService } from './config/app-config.service';
-import { map, Observable, of } from 'rxjs';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
+export function localStorageSyncReducer(
+  reducer: ActionReducer<any>,
+): ActionReducer<any> {
+  return localStorageSync({
+    keys: [APP_FEATURE_KEY],
+    rehydrate: true,
+    checkStorageAvailability: true,
+  })(reducer);
+}
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch()),
+    AppConfigService,
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideEffects(AppEffects),
-    provideState(fromApp.APP_FEATURE_KEY, fromApp.appReducer),
+    provideState(APP_FEATURE_KEY, appReducer),
     AppFacade,
-    { provide: BASE_PATH, useFactory: apiBaseUrl },
+    { provide: BASE_PATH, useFactory: apiBaseUrl, deps: [AppConfigService] },
+    importProvidersFrom(ApiModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
-    provideStore(),
+    provideStore({}, { metaReducers }),
     provideEffects(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideServiceWorker('ngsw-worker.js', {
@@ -47,11 +74,7 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 
-export function apiBaseUrl(): Observable<string> {
+export function apiBaseUrl(): string {
   const service = inject(AppConfigService);
-  return service.init().pipe(
-    map((config) => {
-      return config.apiBaseUrl;
-    }),
-  );
+  return service.config.apiBaseUrl;
 }

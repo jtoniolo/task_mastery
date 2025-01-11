@@ -12,7 +12,11 @@ export class AppConfigService {
   private appConfig: AppConfig = {} as AppConfig;
   @Inject(DOCUMENT) private readonly doc: any = inject(DOCUMENT);
 
-  constructor() {}
+  constructor() {
+    this.http.get<AppConfig>('config.json').subscribe((config: AppConfig) => {
+      this.appConfig = config;
+    });
+  }
 
   init(): Observable<AppConfig> {
     return this.http.get<AppConfig>('config.json').pipe(

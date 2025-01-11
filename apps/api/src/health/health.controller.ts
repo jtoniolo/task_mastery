@@ -6,6 +6,7 @@ import {
   TypeOrmHealthIndicator,
   HttpHealthIndicator,
 } from '@nestjs/terminus';
+import { Public } from 'auth/public.decorator';
 
 @ApiTags('health')
 @Controller('health')
@@ -16,18 +17,21 @@ export class HealthController {
     private readonly http: HttpHealthIndicator,
   ) {}
 
+  @Public()
   @Get()
   @HealthCheck()
   check() {
     return this.health.check([() => this.db.pingCheck('database')]);
   }
 
+  @Public()
   @Get('liveness')
   @HealthCheck()
   liveness() {
     return { status: 'ok' };
   }
 
+  @Public()
   @Get('readiness')
   @HealthCheck()
   readiness() {

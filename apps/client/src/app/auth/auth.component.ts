@@ -20,18 +20,19 @@ export class AuthComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const token = params['access_token'];
-      if (token) {
-        this.facade.authenticated(token);
-        if (isPlatformBrowser(this.platformId)) {
-          // Get the token from the URL the Angular way
+    if (isPlatformBrowser(this.platformId)) {
+      this.route.queryParams.subscribe((params) => {
+        const token = params['access_token'];
+        if (token) {
           console.log('Authenticated!');
+          // Post a message to the parent window (this is the popup), which is at the same origin
+          // Don't try to mess with NgRx state here. It doens't work.
+          window.postMessage({ token }, window.location.origin);
           if (window.close) window.close();
+        } else {
+          console.error('No token found in the URL');
         }
-      } else {
-        console.error('No token found in the URL');
-      }
-    });
+      });
+    }
   }
 }

@@ -42,6 +42,7 @@ async function bootstrap() {
     .setDescription('The Email Sweeperr API documentation')
     .setVersion('1.0')
     .addOAuth2()
+    .addBearerAuth()
     .build();
   const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory);

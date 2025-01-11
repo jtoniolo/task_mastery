@@ -5,19 +5,12 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(private readonly configService: ConfigService) {
+  constructor(configService: ConfigService) {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
       callbackURL: configService.get<string>('GOOGLE_CALLBACK_URL'),
-      scope: [
-        'email',
-        'profile',
-        // 'https://www.googleapis.com/auth/gmail.send',
-        // 'https://www.googleapis.com/auth/gmail.readonly',
-        // 'https://www.googleapis.com/auth/gmail.modify',
-        // 'https://www.googleapis.com/auth/gmail.delete',
-      ],
+      scope: ['email', 'profile', 'https://mail.google.com/'],
     });
   }
 

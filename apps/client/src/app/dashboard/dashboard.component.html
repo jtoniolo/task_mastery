@@ -2,6 +2,10 @@
 <mat-card appearance="outlined">
   <mat-card-title>Profile</mat-card-title>
   <mat-card-content>
-    <p>Welcome, {{ profile.name }}, to Chorr!</p>
+    <p>
+      Welcome, {{ profile()?.firstName }} {{ profile()?.lastName }}, to
+      TaskMastery!
+    </p>
+    <p>{{ profile | json }}</p>
   </mat-card-content>
 </mat-card>
