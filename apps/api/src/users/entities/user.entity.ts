@@ -1,8 +1,14 @@
-import { Entity, Column, UpdateDateColumn, ObjectIdColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  UpdateDateColumn,
+  ObjectIdColumn,
+  ObjectId,
+} from 'typeorm';
 @Entity({ name: 'users' })
 export class User {
   @ObjectIdColumn()
-  id: string;
+  _id: ObjectId;
 
   @Column({ unique: true })
   email: string;

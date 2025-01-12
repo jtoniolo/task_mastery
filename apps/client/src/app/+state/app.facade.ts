@@ -14,6 +14,10 @@ export class AppFacade {
    */
   loaded$ = this.store.pipe(select(AppSelectors.selectAppLoaded));
   allApp$ = this.store.pipe(select(AppSelectors.selectAllApp));
+  authToken$ = this.store.pipe(select(AppSelectors.selectAuthToken));
+  tokenExpired$ = this.store.pipe(select(AppSelectors.selectTokenExpired));
+  apiBaseUrl$ = this.store.pipe(select(AppSelectors.selectApiBaseUrl));
+  profile$ = this.store.pipe(select(AppSelectors.selectProfile));
 
   authenticated(token: string) {
     this.store.dispatch(AppActions.authenticated({ token }));
@@ -25,5 +29,9 @@ export class AppFacade {
    */
   init() {
     this.store.dispatch(AppActions.initApp());
+  }
+
+  dashboardOpen() {
+    this.store.dispatch(AppActions.dashboardOpen());
   }
 }

@@ -29,7 +29,11 @@ const reducer = createReducer(
     loaded: true,
   })),
   on(AppActions.loadAppFailure, (state, { error }) => ({ ...state, error })),
-  on(AppActions.authenticated, (state, { token }) => ({ ...state, token }))
+  on(AppActions.authenticated, (state, { token }) => ({ ...state, token })),
+  on(AppActions.loadProfileSuccess, (state, { profile }) => ({
+    ...state,
+    profile,
+  })),
 );
 
 export function appReducer(state: AppState | undefined, action: Action) {

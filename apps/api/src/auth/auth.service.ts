@@ -4,6 +4,7 @@ import { generateFromEmail } from 'unique-username-generator';
 import { User } from '../users/entities/user.entity';
 import { RegisterUserDto } from './dtos/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'jsonwebtoken';
 import {
   BadRequestException,
   InternalServerErrorException,
@@ -29,7 +30,13 @@ export class AuthService {
    */
   generateJwt(payload) {
     const secret = this.configService.get<string>('JWT_SECRET');
-    return this.jwtService.sign(payload, { secret });
+    return this.jwtService.sign(payload, {
+      secret,
+      expiresIn: '1d',
+      //TODO: Update audience and issuer. Should come from config.
+      audience: 'http://localhost:4200',
+      issuer: 'http://localhost:3000',
+    });
   }
 
   /**
@@ -49,10 +56,11 @@ export class AuthService {
       return this.registerUser(user);
     }
 
-    return this.generateJwt({
-      sub: userExists.id,
+    const payload: JwtPayload = {
+      sub: userExists._id.toHexString(),
       email: userExists.email,
-    });
+    };
+    return this.generateJwt(payload);
   }
 
   /**
@@ -69,7 +77,7 @@ export class AuthService {
       await this.userRepository.save(newUser);
 
       return this.generateJwt({
-        sub: newUser.id,
+        sub: newUser._id.toHexString(),
         email: newUser.email,
       });
     } catch {

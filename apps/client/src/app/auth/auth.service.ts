@@ -1,16 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { SsrCookieService } from 'ngx-cookie-service-ssr';
+import { AppFacade } from '../+state/app.facade';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly http = inject(HttpClient);
-  private readonly router = inject(Router);
-  constructor() {}
+  private readonly cookieServcice = inject(SsrCookieService);
+  private readonly facade = inject(AppFacade);
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
-  }
+  constructor() {}
 }
