@@ -7,6 +7,9 @@ import { initApp, loadAppSuccess } from './app.actions';
 import { AppConfigService } from '../config/app-config.service';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '../config/app-config';
+import { BASE_PATH } from '../proxy';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('AppEffects', () => {
   let actions$ = new Observable<Action>();
@@ -20,7 +23,11 @@ describe('AppEffects', () => {
   }
 
   TestBed.configureTestingModule({
-    providers: [provideMockActions(() => actions$)],
+    providers: [
+      provideMockActions(() => actions$),
+      provideHttpClient(),
+      provideHttpClientTesting(),
+    ],
   });
 
   beforeEach(() => {
@@ -31,6 +38,7 @@ describe('AppEffects', () => {
           provide: AppConfigService,
           useClass: MockAppConfigService,
         },
+        { provide: BASE_PATH, useValue: 'http://example.com' },
       ],
     });
 

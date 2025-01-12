@@ -47,5 +47,5 @@ function decodeJWTToken(token: string) {
 
 export const selectProfile = createSelector(
   selectAppState,
-  (state: AppState) => state.profile,
+  (state: AppState) => state?.profile,
 );

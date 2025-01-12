@@ -9,7 +9,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppConfigService {
   private readonly http = inject(HttpClient);
-  private appConfig: AppConfig = {} as AppConfig;
+  private appConfig: AppConfig = {
+    title: 'Email Sweeper',
+    apiBaseUrl: '',
+    isFromDefault: true,
+  } as AppConfig;
   @Inject(DOCUMENT) private readonly doc: any = inject(DOCUMENT);
 
   constructor() {
