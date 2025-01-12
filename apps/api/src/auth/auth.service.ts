@@ -11,6 +11,9 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectQueue } from '@nestjs/bullmq';
+import { QUEUE_NEW_USER } from 'queue/queue.constants';
+import { Queue } from 'bullmq';
 
 /**
  * AuthService handles authentication-related operations such as signing in and registering users.
@@ -20,6 +23,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectQueue(QUEUE_NEW_USER) private readonly newUserQueue: Queue,
     private readonly configService: ConfigService,
   ) {}
 
@@ -75,6 +79,11 @@ export class AuthService {
       newUser.username = generateFromEmail(user.email, 5);
 
       await this.userRepository.save(newUser);
+
+      // This will trigger gmail sync
+      await this.newUserQueue.add('register', newUser, {
+        removeOnComplete: true,
+      });
 
       return this.generateJwt({
         sub: newUser._id.toHexString(),

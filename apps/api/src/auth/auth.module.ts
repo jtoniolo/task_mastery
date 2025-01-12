@@ -10,6 +10,8 @@ import { User } from '../users/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { QueueModule } from 'queue/queue.module';
+import { QUEUE_NEW_USER } from 'queue/queue.constants';
 
 @Module({
   imports: [
@@ -22,6 +24,9 @@ import { JwtAuthGuard } from './jwt-auth.guard';
         signOptions: { expiresIn: '1h', audience: 'http://localhost:4200' },
       }),
       inject: [ConfigService],
+    }),
+    QueueModule.register({
+      queues: [QUEUE_NEW_USER],
     }),
   ],
   controllers: [AuthController],

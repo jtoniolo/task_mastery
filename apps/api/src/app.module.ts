@@ -10,12 +10,16 @@ import { ThrottlerBehindProxyGuard } from './middleware/throttler-behind-proxy.g
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from 'users/user.module';
+import { GmailModule } from './gmail/gmail.module';
+import { queueConfig } from './config/queue.config';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
     HealthModule,
     AuthModule,
     UserModule,
+    queueConfig,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.dev.local', '.env.dev', '.env'],
@@ -47,6 +51,8 @@ import { UserModule } from 'users/user.module';
         limit: 2000,
       },
     ]),
+    GmailModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [
