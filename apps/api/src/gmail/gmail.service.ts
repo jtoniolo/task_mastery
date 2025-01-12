@@ -12,4 +12,8 @@ export class GmailService {
     @InjectRepository(Message)
     private readonly messageRepository: Repository<Message>,
   ) {}
+
+  async saveEmailsAsync(messages: Message[]): Promise<Message[]> {
+    return await this.messageRepository.save(messages);
+  }
 }

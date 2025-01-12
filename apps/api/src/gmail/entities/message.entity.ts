@@ -11,6 +11,9 @@ export class Message {
   _id: ObjectId;
 
   @Column()
+  userId: string;
+
+  @Column()
   messageId: string;
 
   @Column()
