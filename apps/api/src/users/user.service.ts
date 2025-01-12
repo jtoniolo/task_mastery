@@ -13,6 +13,7 @@ export class UserService {
   ) {}
   async findById(id: string): Promise<UserDto> {
     const _id = new ObjectId(id);
+    if (!ObjectId.isValid(id)) throw new Error('Invalid ObjectId');
     const user = await this.userRepository.findOne({ where: { _id } });
     return plainToInstance(UserDto, user);
   }
