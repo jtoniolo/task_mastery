@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { catchError, mergeMap, Observable, switchMap } from 'rxjs';
+import { catchError, mergeMap, Observable } from 'rxjs';
 import { AppFacade } from '../+state/app.facade';
 import { Router } from '@angular/router';
 

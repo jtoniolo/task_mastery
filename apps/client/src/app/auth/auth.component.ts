@@ -1,11 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import {
-  afterNextRender,
-  Component,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-} from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppFacade } from '../+state/app.facade';
 

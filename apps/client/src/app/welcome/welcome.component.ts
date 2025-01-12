@@ -1,13 +1,6 @@
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { Component, effect, inject, PLATFORM_ID } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { AppFacade } from '../+state/app.facade';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -19,7 +12,7 @@ import { selectAuthToken } from '../+state/app.selectors';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly store = inject(Store<AppState>);
   private readonly authToken$ = this.store.select(selectAuthToken);
@@ -37,15 +30,6 @@ export class WelcomeComponent implements OnInit {
       this.router.navigate(['/dashboard']);
     }
   });
-
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // this.authToken$.subscribe((token) => {
-      //   console.log('token change detected on welcome: ', token);
-      //   if (token) this.router.navigate(['/dashboard']);
-      // });
-    }
-  }
 
   signUpWithGoogle(): void {
     this.facade.apiBaseUrl$.subscribe((apiBaseUrl) => {

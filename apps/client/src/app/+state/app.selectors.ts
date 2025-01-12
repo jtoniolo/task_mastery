@@ -1,4 +1,4 @@
-import { createFeatureSelector, createSelector, select } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { APP_FEATURE_KEY, AppState } from './app.reducer';
 
 // Lookup the 'App' feature state managed by NgRx

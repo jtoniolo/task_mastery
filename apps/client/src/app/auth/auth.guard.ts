@@ -2,7 +2,6 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Observable, of, switchMap, take } from 'rxjs';
-import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { AppFacade } from '../+state/app.facade';
 import { isPlatformBrowser } from '@angular/common';
 import { decodeJWTToken } from '../shared';

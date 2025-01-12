@@ -8,14 +8,6 @@ import { AppFacade } from '../+state/app.facade';
 export class AuthService {
   private readonly cookieServcice = inject(SsrCookieService);
   private readonly facade = inject(AppFacade);
-  private token: string = '';
 
   constructor() {}
-
-  isAuthenticated(): boolean {
-    // Check if the token is already stored in the service
-    if (this.token) return true;
-
-    return !!this.token;
-  }
 }
