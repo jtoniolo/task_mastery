@@ -1661,6 +1661,13 @@
   dependencies:
     googleapis-common "^7.0.0"
 
+"@googleapis/oauth2@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@googleapis/oauth2/-/oauth2-1.0.7.tgz#a9e7e373d4b7c2eb8ee25e3914e0652bf25df0fc"
+  integrity sha512-8vElraqqkyOkoGv0BeYZAh3OTlyxuy9Xisv9P+Pekz/PIB3c5GHnxndw5ANxlKuGXf123hgBpToUuG+4qkarlw==
+  dependencies:
+    googleapis-common "^7.0.0"
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"

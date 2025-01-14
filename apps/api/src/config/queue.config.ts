@@ -2,7 +2,7 @@ import { BullModule } from '@nestjs/bullmq';
 
 export const queueConfig = BullModule.forRoot({
   connection: {
-    host: 'localhost',
+    host: process.env.REDIS_HOST || 'localhost',
     port: 6379,
   },
   defaultJobOptions: {

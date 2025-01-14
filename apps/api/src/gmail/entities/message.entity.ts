@@ -1,45 +1,4 @@
-import {
-  Entity,
-  Column,
-  UpdateDateColumn,
-  ObjectIdColumn,
-  ObjectId,
-} from 'typeorm';
-@Entity({ name: 'messages' })
-export class Message {
-  @ObjectIdColumn()
-  _id: ObjectId;
-
-  @Column()
-  userId: string;
-
-  @Column()
-  messageId: string;
-
-  @Column()
-  threadId: string;
-
-  @Column()
-  snippet: string;
-
-  @Column()
-  historyId: string;
-
-  @Column()
-  internalDate: string;
-
-  @Column()
-  labelIds: string[];
-
-  @Column()
-  payload: MessagePart;
-
-  @Column()
-  sizeEstimate: number;
-
-  @Column()
-  raw: string;
-}
+import { Entity, Column, ObjectIdColumn, ObjectId } from 'typeorm';
 
 export class MessagePart {
   @Column()
@@ -59,6 +18,43 @@ export class MessagePart {
 
   @Column()
   parts: MessagePart[];
+}
+
+@Entity({ name: 'messages' })
+export class Message {
+  @ObjectIdColumn()
+  _id: ObjectId;
+
+  @Column()
+  userId: string;
+
+  @Column()
+  messageId: string;
+
+  @Column()
+  threadId?: string;
+
+  @Column()
+  snippet?: string;
+
+  @Column()
+  historyId?: string;
+
+  @Column()
+  internalDate?: string;
+
+  @Column()
+  labelIds?: string[];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @Column((type) => MessagePart)
+  payload?: MessagePart;
+
+  @Column()
+  sizeEstimate?: number;
+
+  @Column()
+  raw?: string;
 }
 
 export class MessageList {

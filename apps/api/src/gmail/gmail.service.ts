@@ -1,4 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { ObjectId } from 'mongodb';
 import { Repository } from 'typeorm';
 import { User } from 'users/entities/user.entity';
 import { Message } from './entities/message.entity';
@@ -13,6 +14,16 @@ export class GmailService {
     private readonly messageRepository: Repository<Message>,
   ) {}
 
+  async getMessageById(id: string): Promise<Message> {
+    const _id = new ObjectId(id);
+    return await this.messageRepository.findOne({ where: { _id } });
+  }
+
+  /**
+   * Saves emails to the database.
+   * @param messages - The messages to save.
+   * @returns The saved messages.
+   */
   async saveEmailsAsync(messages: Message[]): Promise<Message[]> {
     return await this.messageRepository.save(messages);
   }

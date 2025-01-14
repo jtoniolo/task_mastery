@@ -1,19 +1,20 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { generateFromEmail } from 'unique-username-generator';
-import { User } from '../users/entities/user.entity';
-import { RegisterUserDto } from './dtos/auth.dto';
-import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from 'jsonwebtoken';
 import {
+  Injectable,
+  Logger,
   BadRequestException,
   InternalServerErrorException,
-  Injectable,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { InjectQueue } from '@nestjs/bullmq';
-import { QUEUE_NEW_USER } from 'queue/queue.constants';
-import { Queue } from 'bullmq';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JwtPayload } from 'jsonwebtoken';
+import { Repository } from 'typeorm';
+import { generateFromEmail } from 'unique-username-generator';
+
+import { ConfigService } from 'config/config.service';
+import { QueueService } from 'queue/queue.service';
+
+import { RegisterUserDto } from './dtos/auth.dto';
+import { User } from '../users/entities/user.entity';
 
 /**
  * AuthService handles authentication-related operations such as signing in and registering users.
@@ -23,8 +24,9 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectQueue(QUEUE_NEW_USER) private readonly newUserQueue: Queue,
+    private readonly queueService: QueueService,
     private readonly configService: ConfigService,
+    private readonly logger: Logger,
   ) {}
 
   /**
@@ -33,13 +35,13 @@ export class AuthService {
    * @returns The generated JWT.
    */
   generateJwt(payload) {
-    const secret = this.configService.get<string>('JWT_SECRET');
+    const secret = this.configService.jwtSecret;
     return this.jwtService.sign(payload, {
       secret,
       expiresIn: '1d',
       //TODO: Update audience and issuer. Should come from config.
-      audience: 'http://localhost:4200',
-      issuer: 'http://localhost:3000',
+      audience: this.configService.clientUrl,
+      issuer: this.configService.jwtIssuer,
     });
   }
 
@@ -81,9 +83,11 @@ export class AuthService {
       await this.userRepository.save(newUser);
 
       // This will trigger gmail sync
-      await this.newUserQueue.add('register', newUser, {
-        removeOnComplete: true,
-      });
+      try {
+        await this.queueService.addNewUserJob(newUser);
+      } catch (e) {
+        this.logger.error(`Failed to add job to queue: ${e}`, e?.stack);
+      }
 
       return this.generateJwt({
         sub: newUser._id.toHexString(),
