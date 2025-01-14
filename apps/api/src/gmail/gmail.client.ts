@@ -3,7 +3,7 @@ import { Message, MessageList } from './entities/message.entity';
 import { OAuth2Client } from 'google-auth-library';
 
 /**
- * This is a wrapper for the Gmail API
+ * The GmailClient class is responsible for interacting with the Gmail API.
  */
 export class GmailClient {
   private readonly client: gmail_v1.Gmail;
@@ -11,6 +11,11 @@ export class GmailClient {
     this.client = new gmail_v1.Gmail({ auth });
   }
 
+  /**
+   * Lists the messages in the user's mailbox.
+   * @param pageToken - The token for the next page of messages.
+   * @returns The list of messages.
+   */
   async listEmail(pageToken?: string): Promise<MessageList> {
     const response = await this.client.users.messages.list({
       userId: 'me',
@@ -36,6 +41,12 @@ export class GmailClient {
     };
   }
 
+  /**
+   * Gets a message by ID.
+   * @param messageId - The ID of the message.
+   * @param format - The format of the message.
+   * @returns The message.
+   */
   async getMessage(
     messageId: string,
     format: string = 'metadata',

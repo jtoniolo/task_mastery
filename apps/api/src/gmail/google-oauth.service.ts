@@ -5,6 +5,9 @@ import { OAuth2Client, OAuth2ClientOptions } from 'google-auth-library';
 import { UserService } from 'users/user.service';
 
 @Injectable()
+/**
+ * The GoogleOauthService class is responsible for creating and managing OAuth2 clients for Google services.
+ */
 export class GoogleOauthService {
   private readonly options: OAuth2ClientOptions;
 
@@ -20,6 +23,12 @@ export class GoogleOauthService {
     };
   }
 
+  /**
+   * Creates an OAuth2 client using the provided credentials.
+   *
+   * @param credentials - The credentials to use for authentication.
+   * @returns An OAuth2 client instance.
+   */
   getClient(credentials: Credentials): OAuth2Client {
     const client = new auth.OAuth2(this.options);
 
