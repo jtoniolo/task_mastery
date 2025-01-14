@@ -27,7 +27,6 @@ export class GmailClient {
           labelIds: message.labelIds,
           payload: message.payload,
           sizeEstimate: message.sizeEstimate,
-          raw: message.raw,
         } as Message;
       }) || [];
     return {
@@ -37,11 +36,14 @@ export class GmailClient {
     };
   }
 
-  async getMetadata(messageId: string): Promise<Message> {
+  async getMessage(
+    messageId: string,
+    format: string = 'metadata',
+  ): Promise<Message> {
     const response = await this.client.users.messages.get({
       userId: 'me',
       id: messageId,
-      format: 'metadata',
+      format: format,
     });
     return response.data as Message;
   }

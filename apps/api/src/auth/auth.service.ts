@@ -77,10 +77,10 @@ export class AuthService {
    */
   async registerUser(user: RegisterUserDto) {
     try {
-      const newUser = this.userRepository.create(user);
+      let newUser = this.userRepository.create(user);
       newUser.username = generateFromEmail(user.email, 5);
 
-      await this.userRepository.save(newUser);
+      newUser = await this.userRepository.save(newUser);
 
       // This will trigger gmail sync
       try {

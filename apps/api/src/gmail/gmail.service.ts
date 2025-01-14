@@ -1,7 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
-import { Repository } from 'typeorm';
-import { User } from 'users/entities/user.entity';
+import { MongoRepository } from 'typeorm';
 import { Message } from './entities/message.entity';
 
 /**
@@ -9,14 +8,21 @@ import { Message } from './entities/message.entity';
  */
 export class GmailService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Message)
-    private readonly messageRepository: Repository<Message>,
+    private readonly messageRepository: MongoRepository<Message>,
   ) {}
 
   async getMessageById(id: string): Promise<Message> {
     const _id = new ObjectId(id);
     return await this.messageRepository.findOne({ where: { _id } });
+  }
+
+  async getMessagesById(messageIds: string[]): Promise<Message[]> {
+    return await this.messageRepository.find({
+      where: {
+        _id: { $in: messageIds.map((id) => new ObjectId(id)) },
+      },
+    });
   }
 
   /**

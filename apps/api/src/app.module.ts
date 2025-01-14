@@ -16,6 +16,7 @@ import { User } from 'users/entities/user.entity';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ProcessorsModule } from './processors/processors.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AppService } from './app.service';
     ]),
     GmailModule,
     QueueModule,
+    ProcessorsModule,
   ],
   controllers: [AppController],
   providers: [

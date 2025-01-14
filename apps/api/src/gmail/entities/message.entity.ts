@@ -35,7 +35,25 @@ export class Message {
   threadId?: string;
 
   @Column()
+  from?: string;
+
+  @Column()
+  to?: string;
+
+  @Column()
+  date: Date;
+
+  @Column()
+  subject?: string;
+
+  @Column()
   snippet?: string;
+
+  @Column()
+  body?: string;
+
+  @Column()
+  list_unsubscribe?: string;
 
   @Column()
   historyId?: string;
@@ -54,7 +72,7 @@ export class Message {
   sizeEstimate?: number;
 
   @Column()
-  raw?: string;
+  json?: string;
 }
 
 export class MessageList {

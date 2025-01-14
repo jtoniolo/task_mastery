@@ -2,15 +2,15 @@ import { BullModule } from '@nestjs/bullmq';
 import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { GoogleOauthService } from 'auth/google-oauth.service';
 import { QUEUE_NEW_MESSAGES, QUEUE_NEW_USER } from 'queue/queue.constants';
+import { QueueService } from 'queue/queue.service';
 import { User } from 'users/entities/user.entity';
 import { UserService } from 'users/user.service';
 
 import { Message } from './entities/message.entity';
 import { GmailController } from './gmail.controller';
 import { GmailService } from './gmail.service';
-import { QueueService } from 'queue/queue.service';
+import { GoogleOauthService } from './google-oauth.service';
 
 //TODO: Remove Queue realted code after testing
 
@@ -31,7 +31,7 @@ import { QueueService } from 'queue/queue.service';
     UserService,
     QueueService,
   ],
-  exports: [],
+  exports: [GmailService, GoogleOauthService],
   controllers: [GmailController],
 })
 export class GmailModule {}

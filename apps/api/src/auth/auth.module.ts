@@ -12,7 +12,6 @@ import { QueueModule } from 'queue/queue.module';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { GoogleOauthService } from './google-oauth.service';
 import { GoogleStrategy } from './google.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
@@ -40,7 +39,6 @@ import { JwtStrategy } from './jwt.strategy';
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     AuthService,
     ConfigService,
-    GoogleOauthService,
     GoogleStrategy,
     JwtStrategy,
     JwtService,

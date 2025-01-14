@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { Job } from 'bullmq';
 
-import { GoogleOauthService } from 'auth/google-oauth.service';
+import { GoogleOauthService } from 'gmail/google-oauth.service';
 import { MessageList } from 'gmail/entities/message.entity';
 import { GmailClient } from 'gmail/gmail.client';
 import { GmailService } from 'gmail/gmail.service';
@@ -58,9 +58,6 @@ export class NewUserConsumer extends WorkerHost {
           format: 'metadata',
         });
         pageToken = list.nextPageToken;
-        if (count > 100) {
-          break;
-        }
       } while (pageToken);
     } catch (error) {
       this.logger.error(

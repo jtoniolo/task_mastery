@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { ObjectId } from 'mongodb';
 import { Repository } from 'typeorm';
-import { Credentials } from 'auth/google-oauth.service';
+import { Credentials } from '../gmail/google-oauth.service';
 import { User } from './entities/user.entity';
 import { UserDto } from './dto/user.dto';
 
