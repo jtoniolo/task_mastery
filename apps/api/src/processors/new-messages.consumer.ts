@@ -12,6 +12,11 @@ import { GmailClient } from 'gmail/gmail.client';
 import { Message } from 'gmail/entities/message.entity';
 
 @Processor(QUEUE_NEW_MESSAGES)
+/**
+ * The NewMessagesConsumer class is responsible for processing new messages from Gmail.
+ * It extends the WorkerHost class and utilizes various services to authenticate, retrieve,
+ * and process Gmail messages.
+ */
 export class NewMessagesConsumer extends WorkerHost {
   constructor(
     @InjectQueue(QUEUE_NEW_MESSAGES) private readonly newMessagesQueue: Queue,
@@ -49,6 +54,13 @@ export class NewMessagesConsumer extends WorkerHost {
     }
     return new GmailClient(oauth2Client);
   }
+
+  /**
+   * Finds the body of a Gmail message.
+   *
+   * @param message - The Gmail message to search for a body.
+   * @returns The body of the Gmail message.
+   */
   private findBody(message: gmail.gmail_v1.Schema$Message): string {
     let body = '';
     if (
@@ -70,6 +82,13 @@ export class NewMessagesConsumer extends WorkerHost {
     }
     return body;
   }
+
+  /**
+   * Finds the body of a Gmail message part.
+   *
+   * @param part - The Gmail message part to search for a body.
+   * @returns The body of the Gmail message part.
+   */
   private findBodyInPart(part: gmail.gmail_v1.Schema$MessagePart): string {
     let body = '';
     if (part.mimeType === 'text/html' && part.body?.data) {
@@ -82,6 +101,13 @@ export class NewMessagesConsumer extends WorkerHost {
     return body;
   }
 
+  /**
+   * Merges the full details of a Gmail message into a local message.
+   *
+   * @param message - The local message to merge the details into.
+   * @param gmailMessage - The Gmail message to merge the details from.
+   * @returns The merged message.
+   */
   private mergeFull(
     message: Message,
     gmailMessage: gmail.gmail_v1.Schema$Message,
@@ -106,6 +132,13 @@ export class NewMessagesConsumer extends WorkerHost {
     return message;
   }
 
+  /**
+   * Merges the metadata of a Gmail message into a local message.
+   *
+   * @param message - The local message to merge the metadata into.
+   * @param gmailMessage - The Gmail message to merge the metadata from.
+   * @returns The merged message.
+   */
   private mergeMetadata(
     message: Message,
     gmailMessage: gmail.gmail_v1.Schema$Message,
