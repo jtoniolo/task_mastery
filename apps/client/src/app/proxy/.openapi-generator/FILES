@@ -3,12 +3,15 @@ api.module.ts
 api/api.ts
 api/app.service.ts
 api/auth.service.ts
+api/dashboard.service.ts
+api/gmail.service.ts
 api/health.service.ts
 api/users.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/dashboardDto.ts
 model/healthControllerCheckV1200Response.ts
 model/healthControllerCheckV1200ResponseInfoValue.ts
 model/healthControllerCheckV1503Response.ts
