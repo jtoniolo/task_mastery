@@ -17,12 +17,14 @@ import { User } from 'users/entities/user.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProcessorsModule } from './processors/processors.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
     HealthModule,
     AuthModule,
     UserModule,
+    DashboardModule,
     queueConfig,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -58,6 +60,7 @@ import { ProcessorsModule } from './processors/processors.module';
     GmailModule,
     QueueModule,
     ProcessorsModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

@@ -189,6 +189,7 @@ export class NewMessagesConsumer extends WorkerHost {
       this.logger.log(`Retrieving messages`);
       const messages = await this.gmailService.getMessagesById(
         job.data.messageIds,
+        req.userId,
       );
       this.logger.log(`Retrieved ${messages.length} messages`);
 
@@ -208,7 +209,7 @@ export class NewMessagesConsumer extends WorkerHost {
 
       this.logger.log(`saving ${messages.length} messages`);
 
-      await this.gmailService.saveEmailsAsync(messages);
+      await this.gmailService.saveEmailsAsync(messages, req.userId);
     } catch (error) {
       this.logger.error(error.message);
     }

@@ -44,7 +44,7 @@ export class NewUserConsumer extends WorkerHost {
           ...message,
           userId,
         }));
-        await this.service.saveEmailsAsync(messages);
+        await this.service.saveEmailsAsync(messages, userId);
 
         count += messages.length;
         this.logger.debug(`Processed ${count} messages`);
