@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { auth } from '@googleapis/oauth2';
 import { OAuth2Client, OAuth2ClientOptions } from 'google-auth-library';
-import { UserService } from 'users/user.service';
+import { UserService } from '../users/user.service';
 
 @Injectable()
 /**

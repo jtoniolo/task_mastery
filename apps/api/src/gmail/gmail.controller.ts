@@ -2,12 +2,13 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Controller, Get, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Public } from 'auth/public.decorator';
 import { Queue } from 'bullmq';
-import { QUEUE_NEW_USER } from 'queue/queue.constants';
-import { QueueService } from 'queue/queue.service';
 import { Repository } from 'typeorm';
-import { User } from 'users/entities/user.entity';
+
+import { QUEUE_NEW_USER } from '../queue/queue.constants';
+import { QueueService } from '../queue/queue.service';
+import { User } from '../users/entities/user.entity';
+import { Public } from '../auth/public.decorator';
 
 @Controller('gmail')
 export class GmailController {
@@ -20,12 +21,12 @@ export class GmailController {
 
   @Public()
   @Get()
+  //TODO: Remove endpoint after testing Issue #59 (Task) assgined to Jeff for this work
   async get() {
     const user = await this.userRepository.findOne({
       where: { email: 'jeff.toniolo@gmail.com' },
     });
     // This will trigger gmail sync
-    //TODO: Remove queue related code after testing
     try {
       await this.queueService.addNewUserJob(user);
     } catch (e) {
