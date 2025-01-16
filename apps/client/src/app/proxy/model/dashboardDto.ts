@@ -9,12 +9,7 @@
  */
 
 
-export interface UserDto { 
-    email: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    picture: string;
-    lastLogin: string;
+export interface DashboardDto { 
+    messageCount: number;
 }
 
