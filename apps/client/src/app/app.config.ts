@@ -22,9 +22,6 @@ import {
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideServiceWorker } from '@angular/service-worker';
-import { appReducer, APP_FEATURE_KEY } from './+state/app.reducer';
-import { AppEffects } from './+state/app.effects';
-import { AppFacade } from './+state/app.facade';
 import { ApiModule, BASE_PATH } from './proxy';
 import {
   HTTP_INTERCEPTORS,
@@ -36,6 +33,14 @@ import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { AppConfigService } from './config/app-config.service';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import {
+  appReducer,
+  APP_FEATURE_KEY,
+  AppEffects,
+  AppFacade,
+  dashboardFeature,
+  DashboardEffects,
+} from './+state';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>,
@@ -53,8 +58,9 @@ export const appConfig: ApplicationConfig = {
     AppConfigService,
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    provideEffects(AppEffects),
+    provideEffects([AppEffects, DashboardEffects]),
     provideState(APP_FEATURE_KEY, appReducer),
+    provideState(dashboardFeature),
     AppFacade,
     { provide: BASE_PATH, useFactory: apiBaseUrl, deps: [AppConfigService] },
     importProvidersFrom(ApiModule),

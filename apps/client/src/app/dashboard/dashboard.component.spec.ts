@@ -19,8 +19,6 @@ describe('DashboardComponent', () => {
       lastName: 'Anderson',
       username: 'jeff',
       picture: 'https://example.com/jeff.jpg',
-      accessToken: 'abc123',
-      refreshToken: 'def456',
       lastLogin: new Date().toISOString(),
     },
   };
