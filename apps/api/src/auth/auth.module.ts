@@ -18,7 +18,12 @@ import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'google', session: true }),
+    PassportModule.register({
+      defaultStrategy: 'google',
+      session: true,
+      accessType: 'offline',
+      prompt: 'consent',
+    }),
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

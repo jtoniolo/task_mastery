@@ -39,7 +39,6 @@ export class AuthService {
     return this.jwtService.sign(payload, {
       secret,
       expiresIn: '1d',
-      //TODO: Update audience and issuer. Should come from config.
       audience: this.configService.clientUrl,
       issuer: this.configService.jwtIssuer,
     });
@@ -60,6 +59,10 @@ export class AuthService {
 
     if (!userExists) {
       return this.registerUser(user);
+    } else {
+      userExists.accessToken = user.accessToken;
+      userExists.refreshToken = user.refreshToken;
+      await this.userRepository.save(userExists);
     }
 
     const payload: JwtPayload = {
