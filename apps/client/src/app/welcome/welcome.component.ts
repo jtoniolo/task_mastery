@@ -50,7 +50,7 @@ export class WelcomeComponent {
           });
         } catch (e) {
           console.error(e);
-          debugger;
+          console.error(e);
         }
       });
     }
