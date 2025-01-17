@@ -1,6 +1,6 @@
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, effect, inject, PLATFORM_ID } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DOCUMENT } from '@angular/common';
 import { AppFacade } from '../+state/app.facade';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -32,19 +32,27 @@ export class WelcomeComponent {
   });
 
   signUpWithGoogle(): void {
-    this.facade.apiBaseUrl$.subscribe((apiBaseUrl) => {
-      const pxy = open(
-        apiBaseUrl + '/api/v1/auth/google',
-        '_blank',
-        'popup=true,width=500,height=600',
-      );
-
-      pxy?.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin || !event.data?.token)
-          return;
-        console.log('event: ', event);
-        this.facade.authenticated(event.data.token);
+    if (isPlatformBrowser(this.platformId)) {
+      this.facade.apiBaseUrl$.subscribe((apiBaseUrl) => {
+        open(
+          apiBaseUrl + '/api/v1/auth/google',
+          '_blank',
+          'popup=true,width=500,height=600',
+        );
+        try {
+          window.addEventListener('message', (event) => {
+            console.log('event: ', event);
+            if (event.origin !== window.location.origin || !event.data?.token) {
+              console.error('Invalid origin or no token found');
+              return;
+            }
+            this.facade.authenticated(event.data.token);
+          });
+        } catch (e) {
+          console.error(e);
+          console.error(e);
+        }
       });
-    });
+    }
   }
 }
