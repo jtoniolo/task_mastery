@@ -1,29 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DashboardService } from './dashboard.service';
-import { GmailService } from '../gmail/gmail.service';
 import { Logger } from '@nestjs/common';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { DashboardService } from './dashboard.service';
+import { Message } from '../gmail/entities/message.entity';
 
 describe('DashboardService', () => {
   let service: DashboardService;
-  let gmailService: GmailService;
-
+  const messageRepository = {};
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DashboardService,
-        {
-          provide: GmailService,
-          useValue: {
-            getMessageCount: jest.fn(), // Mock the methods you need
-          },
-        },
-
         Logger,
+        {
+          provide: getRepositoryToken(Message),
+          useValue: messageRepository,
+        },
       ],
     }).compile();
 
-    service = module.get<DashboardService>(DashboardService);
-    gmailService = module.get<GmailService>(GmailService);
+    service = await module.resolve<DashboardService>(DashboardService);
   });
 
   it('should be defined', () => {

@@ -2,21 +2,28 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardController } from './dashboard.controller';
 import { Logger } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { GmailService } from '../gmail/gmail.service';
 
 describe('DashboardController', () => {
-  let dashboardService: { getDashboardData: () => { messageCount: 42 } };
+  const dashboardService = {
+    getDashboardData: () => {
+      return { messageCount: 42 };
+    },
+  };
   let controller: DashboardController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [Logger, DashboardService, GmailService],
+      providers: [
+        Logger,
+        {
+          provide: DashboardService,
+          useValue: dashboardService,
+        },
+      ],
       controllers: [DashboardController],
     })
-      .overrideProvider(DashboardService)
-      .useValue(dashboardService)
-      .overrideProvider(GmailService)
-      .useValue({ getMessageCount: () => 42 })
+      // .overrideProvider(DashboardService)
+      // .useValue(dashboardService)
       .compile();
 
     controller = module.get<DashboardController>(DashboardController);
