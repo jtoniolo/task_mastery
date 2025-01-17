@@ -34,7 +34,7 @@ export class WelcomeComponent {
   signUpWithGoogle(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.facade.apiBaseUrl$.subscribe((apiBaseUrl) => {
-        const pxy = open(
+        open(
           apiBaseUrl + '/api/v1/auth/google',
           '_blank',
           'popup=true,width=500,height=600',
