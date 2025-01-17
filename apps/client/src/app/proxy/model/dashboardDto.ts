@@ -7,9 +7,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SenderCountDto } from './senderCountDto';
+import { LabelCountDto } from './labelCountDto';
 
 
 export interface DashboardDto { 
     messageCount: number;
+    unreadMessageCount: number;
+    topTenSenderCount: Array<SenderCountDto>;
+    topTenSenderDomainCount: Array<SenderCountDto>;
+    topTenLabelsCount: Array<LabelCountDto>;
+    emailsOlderThan10Years: number;
+    emailsOlderThan5Years: number;
+    emailsOlderThan3Years: number;
+    emailsOlderThan1Year: number;
+    emailsOlderThan6Months: number;
+    emailsOlderThan3Months: number;
+    emailsOlderThan1Month: number;
 }
 
