@@ -26,47 +26,37 @@ export class DashboardService {
 
   async getDashboardData(): Promise<DashboardDto> {
     try {
-      const messageCount = await this.getMessageCount();
-      const unreadMessageCount = await this.getUnreadMessageCount();
-      const topTenSenderCount = await this.getTopTenSenderCount();
-      const topTenSenderDomainCount = await this.getTopTenSenderDomainCount();
-      const topTenLabelsCount = await this.getTopTenLabelsCount();
-
-      const emailsOlderThan10Years = await this.getEmailsOlderThanYears(10);
-      const emailsOlderThan5Years =
-        await this.getEmailsOlderThanYearsButLessThanYears(5, 10);
-      const emailsOlderThan3Years =
-        await this.getEmailsOlderThanYearsButLessThanYears(3, 5);
-      const emailsOlderThan1Year =
-        await this.getEmailsOlderThanYearsButLessThanYears(1, 3);
-      const emailsOlderThan6Months =
-        await this.getEmailsOlderThanMonthsButLessThanYears(6, 1);
-      const emailsOlderThan3Months =
-        await this.getEmailsOlderThanMonthsButLessThanMonths(3, 6);
-      const emailsOlderThan1Month =
-        await this.getEmailsOlderThanMonthsButLessThanMonths(1, 3);
-
-      this.logger.debug(`Found ${unreadMessageCount} unread messages for user`);
       return {
-        messageCount,
-        unreadMessageCount,
-        topTenSenderCount,
-        topTenSenderDomainCount,
-        topTenLabelsCount,
-        emailsOlderThan10Years,
-        emailsOlderThan5Years,
-        emailsOlderThan3Years,
-        emailsOlderThan1Year,
-        emailsOlderThan6Months,
-        emailsOlderThan3Months,
-        emailsOlderThan1Month,
+        messageCount: await this.getMessageCount(),
+        unreadMessageCount: await this.getUnreadMessageCount(),
+        topTenSenderCount: await this.getTopTenSenderCount(),
+        topTenSenderDomainCount: await this.getTopTenSenderDomainCount(),
+        topTenLabelsCount: await this.getTopTenLabelsCount(),
+        emailsOlderThan10Years:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(
+            10 * 12,
+            Infinity,
+          ),
+        emailsOlderThan5Years:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(5 * 12, 10 * 12),
+        emailsOlderThan3Years:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(3 * 12, 5 * 12),
+        emailsOlderThan1Year:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(1 * 12, 3 * 12),
+        emailsOlderThan6Months:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(6, 12),
+        emailsOlderThan3Months:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(3, 6),
+        emailsOlderThan1Month:
+          await this.getEmailsOlderThanMonthsButLessThanMonths(1, 3),
       };
     } catch (error) {
       this.logger.error(`Error getting dashboard data for user`, error);
       throw error;
     }
   }
-  async getMessageCount(): Promise<number> {
+
+  private async getMessageCount(): Promise<number> {
     try {
       return await this.messageRepository.countBy({ userId: this.userId });
     } catch (error) {
@@ -74,7 +64,8 @@ export class DashboardService {
       throw error;
     }
   }
-  async getUnreadMessageCount(): Promise<number> {
+
+  private async getUnreadMessageCount(): Promise<number> {
     try {
       return await this.messageRepository.countBy({
         userId: this.userId,
@@ -108,34 +99,6 @@ export class DashboardService {
     }
   }
 
-  async getEmailsOlderThanYears(years: number): Promise<number> {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() - years);
-    return this.getEmailsCountByDateRange(date);
-  }
-
-  async getEmailsOlderThanYearsButLessThanYears(
-    minYears: number,
-    maxYears: number,
-  ): Promise<number> {
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - maxYears);
-    const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - minYears);
-    return this.getEmailsCountByDateRange(minDate, maxDate);
-  }
-
-  async getEmailsOlderThanMonthsButLessThanYears(
-    minMonths: number,
-    maxYears: number,
-  ): Promise<number> {
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - maxYears);
-    const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() - minMonths);
-    return this.getEmailsCountByDateRange(minDate, maxDate);
-  }
-
   async getEmailsOlderThanMonthsButLessThanMonths(
     minMonths: number,
     maxMonths: number,
@@ -153,7 +116,6 @@ export class DashboardService {
         .aggregate(
           [
             {
-              // Match the documents where the userId is the current user AND the from field does not contain the user's email address.
               $match: {
                 userId: this.userId,
                 from: {
@@ -167,19 +129,11 @@ export class DashboardService {
             {
               $group: {
                 _id: '$from',
-                count: {
-                  $count: {},
-                },
+                count: { $count: {} },
               },
             },
-            {
-              $sort: {
-                count: -1,
-              },
-            },
-            {
-              $limit: 10,
-            },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
           ],
           {},
         )
@@ -202,7 +156,6 @@ export class DashboardService {
         .aggregate(
           [
             {
-              // Match the documents where the userId is the current user AND the from field does not contain the user's email address.
               $match: {
                 userId: this.userId,
                 from: {
@@ -216,26 +169,13 @@ export class DashboardService {
             {
               $group: {
                 _id: {
-                  $arrayElemAt: [
-                    {
-                      $split: ['$from', '@'],
-                    },
-                    1,
-                  ],
+                  $arrayElemAt: [{ $split: ['$from', '@'] }, 1],
                 },
-                count: {
-                  $count: {},
-                },
+                count: { $count: {} },
               },
             },
-            {
-              $sort: {
-                count: -1,
-              },
-            },
-            {
-              $limit: 10,
-            },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
           ],
           {},
         )
@@ -261,33 +201,20 @@ export class DashboardService {
         .aggregate(
           [
             {
-              // Match the documents where the userId is the current user. and not SENT, INBOX, UNREAD
               $match: {
                 userId: this.userId,
-                labelIds: {
-                  $nin: ['SENT', 'INBOX', 'UNREAD'],
-                },
+                labelIds: { $nin: ['SENT', 'INBOX', 'UNREAD'] },
               },
             },
-            {
-              $unwind: '$labelIds',
-            },
+            { $unwind: '$labelIds' },
             {
               $group: {
                 _id: '$labelIds',
-                count: {
-                  $count: {},
-                },
+                count: { $count: {} },
               },
             },
-            {
-              $sort: {
-                count: -1,
-              },
-            },
-            {
-              $limit: 10,
-            },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
           ],
           {},
         )
