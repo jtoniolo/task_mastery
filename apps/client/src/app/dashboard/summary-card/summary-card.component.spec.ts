@@ -8,12 +8,14 @@ describe('SummaryCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SummaryCardComponent]
-    })
-    .compileComponents();
+      imports: [SummaryCardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryCardComponent);
+    fixture.componentRef.setInput('title', 'Test Title');
+    fixture.componentRef.setInput('datasource', []);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
