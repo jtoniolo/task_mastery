@@ -1,103 +1,34 @@
 <h1>Dashboard</h1>
 
 <div class="container">
-  <mat-card appearance="outlined">
-    <mat-card-title>Gmail Summary </mat-card-title>
-    <mat-card-content>
-      <table
-        mat-table
-        [dataSource]="
-          dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
-        "
-        class="mat-elevation-z8"
-      >
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.title }}</td>
-        </ng-container>
-        <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">
-            {{ element.value }}
-          </td>
-        </ng-container>
+  <tsm-summary-card
+    title="Gmail Summary"
+    [datasource]="
+      dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
+  <tsm-summary-card
+    title="Top Senders"
+    [datasource]="
+      dashboard()?.topTenSenders ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
 
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  <mat-card appearance="outlined">
-    <mat-card-title>Top Senders</mat-card-title>
-    <mat-card-content>
-      <table
-        mat-table
-        [dataSource]="
-          dashboard()?.topTenSenders ?? [{ sender: 'Loading...', count: 0 }]
-        "
-        class="mat-elevation-z8"
-      >
-        <ng-container matColumnDef="sender">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.sender }}</td>
-        </ng-container>
-        <ng-container matColumnDef="count">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.count }}</td>
-        </ng-container>
+  <tsm-summary-card
+    title="Top Sender Domains"
+    [datasource]="
+      dashboard()?.topTenSenderDomains ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
 
-        <tr mat-row *matRowDef="let row; columns: ['sender', 'count']"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-  <!-- Top Sender Domains -->
-  <mat-card appearance="outlined">
-    <mat-card-title>Top Sender Domains</mat-card-title>
-    <mat-card-content>
-      <table
-        mat-table
-        [dataSource]="
-          dashboard()?.topTenSenderDomains ?? [
-            { sender: 'Loading...', count: 0 },
-          ]
-        "
-        class="mat-elevation-z8"
-      >
-        <ng-container matColumnDef="sender">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.sender }}</td>
-        </ng-container>
-        <ng-container matColumnDef="count">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.count }}</td>
-        </ng-container>
-
-        <tr mat-row *matRowDef="let row; columns: ['sender', 'count']"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Top labels -->
-  <mat-card appearance="outlined">
-    <mat-card-title>Top Labels</mat-card-title>
-    <mat-card-content>
-      <table
-        mat-table
-        [dataSource]="
-          dashboard()?.topTenLabels ?? [{ labelId: 'Loading...', count: 0 }]
-        "
-        class="mat-elevation-z8"
-      >
-        <ng-container matColumnDef="labelId">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.labelId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="count">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element">{{ element.count }}</td>
-        </ng-container>
-
-        <tr mat-row *matRowDef="let row; columns: ['labelId', 'count']"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+  <tsm-summary-card
+    title="Top Labels"
+    [datasource]="
+      dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
 </div>
