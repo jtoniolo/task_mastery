@@ -1,0 +1,24 @@
+mat-card {
+  margin: 10px;
+}
+mat-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 5px;
+
+  span {
+    display: inline-block;
+
+    vertical-align: top;
+    margin: 5px;
+  }
+  span.title {
+    max-width: 200px;
+    overflow: ellipsis;
+  }
+  button {
+    float: right;
+  }
+}

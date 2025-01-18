@@ -1,13 +1,34 @@
 <h1>Dashboard</h1>
-<mat-card appearance="outlined">
-  <mat-card-title
-    >Profile
-    <mat-icon matBadge="{{ dashboard()?.messageCount }}">email</mat-icon>
-  </mat-card-title>
-  <mat-card-content>
-    <p>
-      Welcome, {{ profile()?.firstName }} {{ profile()?.lastName }}, to
-      TaskMastery!
-    </p>
-  </mat-card-content>
-</mat-card>
+
+<div class="container">
+  <tsm-summary-card
+    title="Gmail Summary"
+    [datasource]="
+      dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
+  <tsm-summary-card
+    title="Top Senders"
+    [datasource]="
+      dashboard()?.topTenSenders ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
+
+  <tsm-summary-card
+    title="Top Sender Domains"
+    [datasource]="
+      dashboard()?.topTenSenderDomains ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
+
+  <tsm-summary-card
+    title="Top Labels"
+    [datasource]="
+      dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
+    "
+    (drillDown)="drillDown($event)"
+  ></tsm-summary-card>
+</div>
