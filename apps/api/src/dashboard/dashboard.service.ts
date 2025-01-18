@@ -86,21 +86,32 @@ export class DashboardService {
     }
   }
 
-  async getEmailsOlderThanYears(years: number): Promise<number> {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() - years);
+  private async getEmailsCountByDateRange(
+    minDate: Date,
+    maxDate?: Date,
+  ): Promise<number> {
+    const dateCondition: any = { $gte: minDate };
+    if (maxDate) {
+      dateCondition.$lt = maxDate;
+    }
     try {
       return await this.messageRepository.countBy({
         userId: this.userId,
-        date: { $lt: date },
+        date: dateCondition,
       });
     } catch (error) {
       this.logger.error(
-        `Error getting emails older than ${years} years for user`,
+        `Error getting emails count by date range for user`,
         error,
       );
       throw error;
     }
+  }
+
+  async getEmailsOlderThanYears(years: number): Promise<number> {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - years);
+    return this.getEmailsCountByDateRange(date);
   }
 
   async getEmailsOlderThanYearsButLessThanYears(
@@ -111,18 +122,7 @@ export class DashboardService {
     minDate.setFullYear(minDate.getFullYear() - maxYears);
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - minYears);
-    try {
-      return await this.messageRepository.countBy({
-        userId: this.userId,
-        date: { $gte: minDate, $lt: maxDate },
-      });
-    } catch (error) {
-      this.logger.error(
-        `Error getting emails older than ${minYears} years but less than ${maxYears} years for user`,
-        error,
-      );
-      throw error;
-    }
+    return this.getEmailsCountByDateRange(minDate, maxDate);
   }
 
   async getEmailsOlderThanMonthsButLessThanYears(
@@ -133,18 +133,7 @@ export class DashboardService {
     minDate.setFullYear(minDate.getFullYear() - maxYears);
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() - minMonths);
-    try {
-      return await this.messageRepository.countBy({
-        userId: this.userId,
-        date: { $gte: minDate, $lt: maxDate },
-      });
-    } catch (error) {
-      this.logger.error(
-        `Error getting emails older than ${minMonths} months but less than ${maxYears} years for user`,
-        error,
-      );
-      throw error;
-    }
+    return this.getEmailsCountByDateRange(minDate, maxDate);
   }
 
   async getEmailsOlderThanMonthsButLessThanMonths(
@@ -155,18 +144,7 @@ export class DashboardService {
     minDate.setMonth(minDate.getMonth() - maxMonths);
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() - minMonths);
-    try {
-      return await this.messageRepository.countBy({
-        userId: this.userId,
-        date: { $gte: minDate, $lt: maxDate },
-      });
-    } catch (error) {
-      this.logger.error(
-        `Error getting emails older than ${minMonths} months but less than ${maxMonths} months for user`,
-        error,
-      );
-      throw error;
-    }
+    return this.getEmailsCountByDateRange(minDate, maxDate);
   }
 
   async getTopTenSenderCount(): Promise<SenderCountDto[]> {
