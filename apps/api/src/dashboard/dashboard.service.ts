@@ -20,10 +20,6 @@ export class DashboardService {
     private readonly request: Request,
   ) {}
 
-  private getUserId(): string {
-    return this.request['user'].id;
-  }
-
   private get userId(): string {
     return this.request['user'].id ?? '';
   }
