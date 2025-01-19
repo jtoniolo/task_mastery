@@ -11,6 +11,7 @@ import { Message } from './entities/message.entity';
 import { GmailController } from './gmail.controller';
 import { GmailService } from './gmail.service';
 import { GoogleOauthService } from './google-oauth.service';
+import { Label } from './entities/label.entity';
 
 //TODO: Remove Queue realted code after testing
 
@@ -22,7 +23,7 @@ import { GoogleOauthService } from './google-oauth.service';
     BullModule.registerQueue({
       name: QUEUE_NEW_MESSAGES,
     }),
-    TypeOrmModule.forFeature([User, Message]),
+    TypeOrmModule.forFeature([User, Message, Label]),
   ],
   providers: [
     GmailService,

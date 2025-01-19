@@ -33,37 +33,54 @@ export class NewUserConsumer extends WorkerHost {
     });
     try {
       const client = new GmailClient(oauth2Client);
-      let list: MessageList;
-      let pageToken: string | undefined = undefined;
-      let count = 0;
-      do {
-        list = await client.listEmail(pageToken);
-        this.logger.debug(`Processing ${list.messages.length} messages`);
-
-        const messages = list.messages.map((message) => ({
-          ...message,
-          userId,
-        }));
-        await this.service.saveEmailsAsync(messages, userId);
-
-        count += messages.length;
-        this.logger.debug(`Processed ${count} messages`);
-        const messageIds = messages.map((message) => message._id.toHexString());
-        // Get a more complete version of the message
-        await this.queueService.addNewMessagesJob({
-          access_token: job.data.accessToken,
-          refresh_token: job.data.refreshToken,
-          userId,
-          messageIds,
-          format: 'metadata',
-        });
-        pageToken = list.nextPageToken;
-      } while (pageToken);
+      await this.getLabels(client, userId);
+      await this.getMessages(client, userId, job);
     } catch (error) {
       this.logger.error(
         `Error processing new user: ${error.message}`,
         error.stack,
       );
     }
+  }
+  async getLabels(client: GmailClient, userId: string) {
+    let list = await client.listLabels();
+    list = list.map((label) => ({
+      ...label,
+      userId,
+    }));
+    await this.service.saveLabelsAsync(list, userId);
+  }
+
+  private async getMessages(
+    client: GmailClient,
+    userId: string,
+    job: Job<User, any, string>,
+  ) {
+    let list: MessageList;
+    let pageToken: string | undefined = undefined;
+    let count = 0;
+    do {
+      list = await client.listEmail(pageToken);
+      this.logger.debug(`Processing ${list.messages.length} messages`);
+
+      const messages = list.messages.map((message) => ({
+        ...message,
+        userId,
+      }));
+      await this.service.saveEmailsAsync(messages, userId);
+
+      count += messages.length;
+      this.logger.debug(`Processed ${count} messages`);
+      const messageIds = messages.map((message) => message._id.toHexString());
+      // Get a more complete version of the message
+      await this.queueService.addNewMessagesJob({
+        access_token: job.data.accessToken,
+        refresh_token: job.data.refreshToken,
+        userId,
+        messageIds,
+        format: 'metadata',
+      });
+      pageToken = list.nextPageToken;
+    } while (pageToken);
   }
 }
