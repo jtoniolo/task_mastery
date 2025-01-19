@@ -166,6 +166,12 @@ export class DashboardService {
 
   async getTopTenLabelsCount(): Promise<LabelCountDto[]> {
     const labelCounts = await this.getTop10AggregateCount([
+      {
+        // exclude emails with no labels and IMPORTANT, INBOX, SENT, DRAFT, UNREAD
+        $match: {
+          labelIds: { $nin: ['INBOX', 'SENT', 'DRAFT', 'UNREAD'] },
+        },
+      },
       { $unwind: '$labelIds' },
       {
         $group: {

@@ -1,5 +1,8 @@
 <h1>Dashboard</h1>
-
+<p *ngIf="unprocessedMessages()">
+  Downloading messages... {{ unprocessedMessages() }} messages left to download.
+  Please check back in a few minutes.
+</p>
 <div class="container">
   <tsm-summary-card
     label="Gmail Summary"
@@ -27,6 +30,7 @@
 
   <tsm-summary-card
     label="Top Labels"
+    [labels]="labels()"
     [datasource]="
       dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
     "

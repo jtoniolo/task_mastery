@@ -1,6 +1,7 @@
 import { gmail_v1 } from '@googleapis/gmail';
 import { Message, MessageList } from './entities/message.entity';
 import { OAuth2Client } from 'google-auth-library';
+import { Label } from './entities/label.entity';
 
 /**
  * The GmailClient class is responsible for interacting with the Gmail API.
@@ -9,6 +10,21 @@ export class GmailClient {
   private readonly client: gmail_v1.Gmail;
   constructor(auth: OAuth2Client) {
     this.client = new gmail_v1.Gmail({ auth });
+  }
+
+  async listLabels(): Promise<Label[]> {
+    const response = await this.client.users.labels.list({
+      userId: 'me',
+    });
+    return response.data.labels.map((label) => {
+      return {
+        labelId: label.id,
+        name: label.name,
+        type: label.type,
+        messageListVisibility: label.messageListVisibility,
+        labelListVisibility: label.labelListVisibility,
+      } as Label;
+    });
   }
 
   /**

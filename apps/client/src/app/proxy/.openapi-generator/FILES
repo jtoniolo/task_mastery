@@ -16,6 +16,7 @@ model/healthControllerCheckV1200Response.ts
 model/healthControllerCheckV1200ResponseInfoValue.ts
 model/healthControllerCheckV1503Response.ts
 model/labelCountDto.ts
+model/labelDto.ts
 model/models.ts
 model/senderCountDto.ts
 model/userDto.ts

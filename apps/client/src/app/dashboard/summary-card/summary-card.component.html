@@ -8,12 +8,17 @@
     ></mat-card-title
   >
   <mat-card-content>
+    {{ labels()?.length ?? 0 }}
     <mat-list>
       <mat-list-item *ngFor="let item of datasource()">
         <span>
-          {{ item.title.slice(0, 50) }}
-          @if (item.title.length > 50) {
-            ...
+          @if (labels()?.length) {
+            {{ item.title | label: labels() }}
+          } @else {
+            {{ item?.title?.slice(0, 50) }}
+            @if (item.title?.length ?? 0 > 50) {
+              ...
+            }
           }
         </span>
         <button

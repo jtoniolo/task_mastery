@@ -18,6 +18,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProcessorsModule } from './processors/processors.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { Label } from 'gmail/entities/label.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
         type: 'mongodb',
         url: configService.get<string>('MONGODB_URI'),
         database: configService.get<string>('MONGODB_DB_NAME'),
-        entities: [User, Message],
+        entities: [User, Message, Label],
       }),
       inject: [ConfigService],
     }),
