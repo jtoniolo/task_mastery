@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LabelPipe } from './label.pipe';
 
 @Component({
   selector: 'tsm-summary-card',
@@ -15,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatListModule,
     MatTooltipModule,
+    LabelPipe,
   ],
   templateUrl: './summary-card.component.html',
   styleUrl: './summary-card.component.scss',
@@ -24,10 +26,16 @@ export class SummaryCardComponent {
   datasource = input.required<SummaryItem[]>();
   drillDown = output<string>();
   inboxCountWarning = input<boolean | undefined>();
+  labels = input<LabelEntity[]>();
 }
 
 export interface SummaryItem {
   title: string;
   value?: number;
   drillDownKey?: string;
+}
+
+interface LabelEntity {
+  labelId: string;
+  name: string;
 }

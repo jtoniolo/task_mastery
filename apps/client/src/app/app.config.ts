@@ -41,6 +41,9 @@ import {
   dashboardFeature,
   DashboardEffects,
 } from './+state';
+import { GmailFacade } from './+state/gmail/gmail.facade';
+import { GmailEffects } from './+state/gmail/gmail.effects';
+import { gmailFeature } from './+state/gmail/gmail.reducer';
 
 export function localStorageSyncReducer(
   reducer: ActionReducer<any>,
@@ -58,10 +61,12 @@ export const appConfig: ApplicationConfig = {
     AppConfigService,
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    provideEffects([AppEffects, DashboardEffects]),
+    provideEffects([AppEffects, DashboardEffects, GmailEffects]),
     provideState(APP_FEATURE_KEY, appReducer),
     provideState(dashboardFeature),
+    provideState(gmailFeature),
     AppFacade,
+    GmailFacade,
     { provide: BASE_PATH, useFactory: apiBaseUrl, deps: [AppConfigService] },
     importProvidersFrom(ApiModule),
     provideZoneChangeDetection({ eventCoalescing: true }),

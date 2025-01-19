@@ -27,6 +27,7 @@
 
   <tsm-summary-card
     label="Top Labels"
+    [labels]="labels()"
     [datasource]="
       dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
     "

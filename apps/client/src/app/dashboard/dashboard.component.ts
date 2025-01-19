@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { DashboardFacade } from '../+state';
 import { SummaryCardComponent } from './summary-card/summary-card.component';
+import { GmailFacade } from '../+state/gmail/gmail.facade';
 @Component({
   selector: 'tsm-dashboard',
   imports: [CommonModule, SummaryCardComponent],
@@ -18,10 +19,12 @@ export class DashboardComponent implements OnInit {
   }
   readonly #facade = inject(AppFacade);
   readonly #dashboardFacade = inject(DashboardFacade);
+  readonly #gmailFacade = inject(GmailFacade);
   displayedColumns: string[] = ['title', 'value'];
 
   profile = toSignal(this.#facade.profile$);
   dashboard = toSignal(this.#dashboardFacade.dashboard$);
+  labels = toSignal(this.#gmailFacade.labels$);
 
   drillDown(key: string) {
     // We'll build this in a future user story
