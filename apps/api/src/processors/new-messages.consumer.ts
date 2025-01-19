@@ -120,47 +120,7 @@ export class NewMessagesConsumer extends WorkerHost {
     return address;
   }
 
-  /**
-   * Merges the full details of a Gmail message into a local message.
-   *
-   * @param message - The local message to merge the details into.
-   * @param gmailMessage - The Gmail message to merge the details from.
-   * @returns The merged message.
-   */
-  private mergeFull(
-    message: Message,
-    gmailMessage: gmail.gmail_v1.Schema$Message,
-  ): Message {
-    message.snippet = gmailMessage.snippet;
-    message.labelIds = gmailMessage.labelIds;
-    message.threadId = gmailMessage.threadId;
-    message.sizeEstimate = gmailMessage.sizeEstimate;
-    message.from = this.parseEmailAddress(
-      gmailMessage.payload?.headers?.find((header) => header.name === 'From')
-        ?.value ?? '',
-    );
-    message.to = this.parseEmailAddress(
-      gmailMessage.payload?.headers?.find((header) => header.name === 'To')
-        ?.value ?? '',
-    );
-    message.subject = gmailMessage.payload?.headers?.find(
-      (header) => header.name === 'Subject',
-    )?.value;
-    //Base64 encoded string
-    message.body = this.findBody(gmailMessage);
-    //TODO: Remove after testing
-    //message.json = JSON.stringify(gmailMessage);
-    return message;
-  }
-
-  /**
-   * Merges the metadata of a Gmail message into a local message.
-   *
-   * @param message - The local message to merge the metadata into.
-   * @param gmailMessage - The Gmail message to merge the metadata from.
-   * @returns The merged message.
-   */
-  private mergeMetadata(
+  private mergeCommon(
     message: Message,
     gmailMessage: gmail.gmail_v1.Schema$Message,
   ): Message {
@@ -193,9 +153,44 @@ export class NewMessagesConsumer extends WorkerHost {
         this.logger.error(`Invalid date format: ${msgDate}`);
       }
     }
+    return message;
+  }
+
+  /**
+   * Merges the full details of a Gmail message into a local message.
+   *
+   * @param message - The local message to merge the details into.
+   * @param gmailMessage - The Gmail message to merge the details from.
+   * @returns The merged message.
+   */
+  private mergeFull(
+    message: Message,
+    gmailMessage: gmail.gmail_v1.Schema$Message,
+  ): Message {
+    const merged = this.mergeCommon(message, gmailMessage);
+
+    //Base64 encoded string
+    merged.body = this.findBody(merged);
+    //TODO: Remove after testing
+    //message.json = JSON.stringify(gmailMessage);
+    return merged;
+  }
+
+  /**
+   * Merges the metadata of a Gmail message into a local message.
+   *
+   * @param message - The local message to merge the metadata into.
+   * @param gmailMessage - The Gmail message to merge the metadata from.
+   * @returns The merged message.
+   */
+  private mergeMetadata(
+    message: Message,
+    gmailMessage: gmail.gmail_v1.Schema$Message,
+  ): Message {
+    const merged = this.mergeCommon(message, gmailMessage);
     //TODO: Remove after testing
     //message.json = JSON.stringify(gmailMessage); // Store the full message for testing and experimentation (docs are lacking)
-    return message;
+    return merged;
   }
 
   /**
