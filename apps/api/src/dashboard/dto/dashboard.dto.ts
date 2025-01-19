@@ -66,6 +66,23 @@ export class DashboardDto {
    */
   @ApiProperty()
   unreadMessageCount?: number;
+  /**
+   * The user's inbox email count.
+   */
+  @ApiProperty()
+  inboxMessageCount?: number;
+
+  /**
+   * The user's sent email count.
+   */
+  @ApiProperty()
+  sentMessageCount?: number;
+
+  /**
+   * The user's archived email count.
+   */
+  @ApiProperty()
+  archivedMessageCount?: number;
 
   /**
    * The user's top ten email senders.
@@ -77,7 +94,7 @@ export class DashboardDto {
    * The user's top ten email sender domains.
    */
   @ApiProperty({ type: [SenderCountDto] })
-  topTenSenderDomainCount: SenderCountDto[];
+  topTenSenderDomainCount?: SenderCountDto[];
 
   /**
    * The user's top ten email labels.

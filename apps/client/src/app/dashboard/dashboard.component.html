@@ -2,14 +2,15 @@
 
 <div class="container">
   <tsm-summary-card
-    title="Gmail Summary"
+    label="Gmail Summary"
     [datasource]="
       dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
     "
     (drillDown)="drillDown($event)"
+    [inboxCountWarning]="dashboard()?.inboxCountWarning ?? false"
   ></tsm-summary-card>
   <tsm-summary-card
-    title="Top Senders"
+    label="Top Senders"
     [datasource]="
       dashboard()?.topTenSenders ?? [{ title: 'Loading...', value: 0 }]
     "
@@ -17,7 +18,7 @@
   ></tsm-summary-card>
 
   <tsm-summary-card
-    title="Top Sender Domains"
+    label="Top Sender Domains"
     [datasource]="
       dashboard()?.topTenSenderDomains ?? [{ title: 'Loading...', value: 0 }]
     "
@@ -25,7 +26,7 @@
   ></tsm-summary-card>
 
   <tsm-summary-card
-    title="Top Labels"
+    label="Top Labels"
     [datasource]="
       dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
     "

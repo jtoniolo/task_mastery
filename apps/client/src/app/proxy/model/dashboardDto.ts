@@ -14,6 +14,9 @@ import { LabelCountDto } from './labelCountDto';
 export interface DashboardDto { 
     messageCount: number;
     unreadMessageCount: number;
+    inboxMessageCount: number;
+    sentMessageCount: number;
+    archivedMessageCount: number;
     topTenSenderCount: Array<SenderCountDto>;
     topTenSenderDomainCount: Array<SenderCountDto>;
     topTenLabelsCount: Array<LabelCountDto>;
