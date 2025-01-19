@@ -1,5 +1,5 @@
 import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { GmailEntity, LabelEntity } from './gmail.models';
+import { GmailEntity } from './gmail.models';
 import { gmailApiActions, gmailPageActions } from './gmail.actions';
 
 interface GmailState extends GmailEntity {
