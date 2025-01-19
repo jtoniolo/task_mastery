@@ -12,7 +12,7 @@ describe('SummaryCardComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryCardComponent);
-    fixture.componentRef.setInput('title', 'Test Title');
+    fixture.componentRef.setInput('label', 'Test Title');
     fixture.componentRef.setInput('datasource', []);
     component = fixture.componentInstance;
 

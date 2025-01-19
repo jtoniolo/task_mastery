@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MongoRepository } from 'typeorm';
+import { MongoRepository, ObjectLiteral } from 'typeorm';
 
 import { Message } from '../gmail/entities/message.entity';
 import {
@@ -27,11 +27,13 @@ export class DashboardService {
   async getDashboardData(): Promise<DashboardDto> {
     try {
       return {
-        messageCount: await this.getMessageCount(),
-        unreadMessageCount: await this.getUnreadMessageCount(),
-        inboxMessageCount: await this.getCountByLabel('INBOX'),
-        sentMessageCount: await this.getCountByLabel('SENT'),
-        archivedMessageCount: await this.getArchivedMessageCount(),
+        messageCount: await this.getCountByQuery({}),
+        unreadMessageCount: await this.getCountByQuery({ labelIds: 'UNREAD' }),
+        inboxMessageCount: await this.getCountByQuery({ labelIds: 'INBOX' }),
+        sentMessageCount: await this.getCountByQuery({ labelIds: 'SENT' }),
+        archivedMessageCount: await this.getCountByQuery({
+          labelIds: { $nin: ['INBOX', 'SENT', 'DRAFT'] },
+        }),
         topTenSenderCount: await this.getTopTenSenderCount(),
         topTenSenderDomainCount: await this.getTopTenSenderDomainCount(),
         topTenLabelsCount: await this.getTopTenLabelsCount(),
@@ -58,47 +60,14 @@ export class DashboardService {
       throw error;
     }
   }
-
-  private async getMessageCount(): Promise<number> {
-    try {
-      return await this.messageRepository.countBy({ userId: this.userId });
-    } catch (error) {
-      this.logger.error(`Error getting message count for user`, error);
-      throw error;
-    }
-  }
-
-  private async getUnreadMessageCount(): Promise<number> {
+  private async getCountByQuery(query: ObjectLiteral): Promise<number> {
     try {
       return await this.messageRepository.countBy({
         userId: this.userId,
-        labelIds: 'UNREAD',
-      });
-    } catch (error) {
-      this.logger.error(`Error getting unread message count for user`, error);
-      throw error;
-    }
-  }
-  private async getCountByLabel(label: string): Promise<number> {
-    try {
-      return await this.messageRepository.countBy({
-        userId: this.userId,
-        labelIds: label,
+        ...query,
       });
     } catch (error) {
       this.logger.error(`Error getting message count for user`, error);
-      throw error;
-    }
-  }
-
-  private async getArchivedMessageCount(): Promise<number> {
-    try {
-      return await this.messageRepository.countBy({
-        userId: this.userId,
-        labelIds: { $nin: ['INBOX', 'SENT', 'DRAFT'] },
-      });
-    } catch (error) {
-      this.logger.error(`Error getting archived message count for user`, error);
       throw error;
     }
   }
@@ -136,66 +105,22 @@ export class DashboardService {
     return this.getEmailsCountByDateRange(minDate, maxDate);
   }
 
-  async getTopTenSenderCount(): Promise<SenderCountDto[]> {
+  async getTop10AggregateCount(
+    pipeline: ObjectLiteral[],
+  ): Promise<SenderCountDto[]> {
     try {
+      const _pipeline = [
+        {
+          $match: {
+            userId: this.userId,
+          },
+        },
+        ...pipeline,
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ];
       const values = await this.messageRepository
-        .aggregate(
-          [
-            {
-              $unwind: {
-                path: '$from',
-              },
-            },
-            {
-              $match: {
-                userId: this.userId,
-              },
-            },
-            {
-              $group: {
-                _id: '$from.address',
-                count: { $count: {} },
-              },
-            },
-            { $sort: { count: -1 } },
-            { $limit: 10 },
-          ],
-          {},
-        )
-        .project<{ _id: string; count: number }>({ _id: 1, count: 1 })
-        .toArray();
-
-      return values.map((value) => ({
-        sender: value._id,
-        count: value.count,
-      }));
-    } catch (error) {
-      this.logger.error(`Error getting top ten sender count for user`, error);
-      throw error;
-    }
-  }
-
-  async getTopTenSenderDomainCount(): Promise<SenderCountDto[]> {
-    try {
-      const values = await this.messageRepository
-        .aggregate(
-          [
-            {
-              $match: {
-                userId: this.userId,
-              },
-            },
-            {
-              $group: {
-                _id: '$from.domain',
-                count: { $count: {} },
-              },
-            },
-            { $sort: { count: -1 } },
-            { $limit: 10 },
-          ],
-          {},
-        )
+        .aggregate(_pipeline, {})
         .project<{ _id: string; count: number }>({ _id: 1, count: 1 })
         .toArray();
 
@@ -205,45 +130,54 @@ export class DashboardService {
       }));
     } catch (error) {
       this.logger.error(
-        `Error getting top ten sender domain count for user`,
+        `Error getting top ten aggregate count for user`,
         error,
       );
       throw error;
     }
   }
 
-  async getTopTenLabelsCount(): Promise<LabelCountDto[]> {
-    try {
-      const values = await this.messageRepository
-        .aggregate(
-          [
-            {
-              $match: {
-                userId: this.userId,
-              },
-            },
-            { $unwind: '$labelIds' },
-            {
-              $group: {
-                _id: '$labelIds',
-                count: { $count: {} },
-              },
-            },
-            { $sort: { count: -1 } },
-            { $limit: 10 },
-          ],
-          {},
-        )
-        .project<{ _id: string; count: number }>({ _id: 1, count: 1 })
-        .toArray();
+  async getTopTenSenderCount(): Promise<SenderCountDto[]> {
+    return this.getTop10AggregateCount([
+      {
+        $unwind: {
+          path: '$from',
+        },
+      },
+      {
+        $group: {
+          _id: '$from.address',
+          count: { $count: {} },
+        },
+      },
+    ]);
+  }
 
-      return values.map((value) => ({
-        labelId: value._id,
-        count: value.count,
-      }));
-    } catch (error) {
-      this.logger.error(`Error getting top ten labels count for user`, error);
-      throw error;
-    }
+  async getTopTenSenderDomainCount(): Promise<SenderCountDto[]> {
+    return this.getTop10AggregateCount([
+      {
+        $group: {
+          _id: '$from.domain',
+          count: { $count: {} },
+        },
+      },
+    ]);
+  }
+
+  async getTopTenLabelsCount(): Promise<LabelCountDto[]> {
+    const labelCounts = await this.getTop10AggregateCount([
+      { $unwind: '$labelIds' },
+      {
+        $group: {
+          _id: '$labelIds',
+          count: { $count: {} },
+        },
+      },
+    ]);
+
+    return labelCounts.map((labelCount) => ({
+      labelId: labelCount.sender,
+      count: labelCount.count,
+    }));
   }
 }
