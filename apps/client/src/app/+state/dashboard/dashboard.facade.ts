@@ -12,4 +12,7 @@ export class DashboardFacade {
   }
 
   dashboard$ = this.store.pipe(select(dashboardFeature.selectData));
+  unprocessedMessages$ = this.store.pipe(
+    select(dashboardFeature.selectUnprocessedMessages),
+  );
 }

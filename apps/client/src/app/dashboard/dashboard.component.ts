@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
   profile = toSignal(this.#facade.profile$);
   dashboard = toSignal(this.#dashboardFacade.dashboard$);
   labels = toSignal(this.#gmailFacade.labels$);
+  unprocessedMessages = toSignal(this.#dashboardFacade.unprocessedMessages$);
 
   drillDown(key: string) {
     // We'll build this in a future user story

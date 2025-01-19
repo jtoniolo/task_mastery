@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { AppFacade } from '../+state/app.facade';
 import { AppState } from '../+state/app.reducer';
+import { GmailFacade } from '../+state/gmail/gmail.facade';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -26,7 +27,7 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
-      providers: [AppFacade, provideMockStore({ initialState })],
+      providers: [AppFacade, GmailFacade, provideMockStore({ initialState })],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);

@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on, createSelector } from '@ngrx/store';
 import { dashboardDtoToDashboardData } from './dashboard.utils';
 import { dashboardApiActions, dashboardPageActions } from './dashboard.actions';
 import { DashboardData } from './dashboard.models';
@@ -32,6 +32,16 @@ export const dashboardFeature = createFeature({
       error,
     })),
   ),
+  extraSelectors: ({ selectData }) => {
+    const selectUnprocessedMessages = createSelector(
+      selectData,
+      (data) =>
+        data?.topTenSenderDomains.find((sender) => !sender?.title)?.value,
+    );
+    return {
+      selectUnprocessedMessages,
+    };
+  },
 });
 
 export const {
@@ -41,4 +51,5 @@ export const {
   selectData,
   selectError,
   selectLoading,
+  selectUnprocessedMessages,
 } = dashboardFeature;
