@@ -29,6 +29,9 @@ export class DashboardService {
       return {
         messageCount: await this.getMessageCount(),
         unreadMessageCount: await this.getUnreadMessageCount(),
+        inboxMessageCount: await this.getCountByLabel('INBOX'),
+        sentMessageCount: await this.getCountByLabel('SENT'),
+        archivedMessageCount: await this.getArchivedMessageCount(),
         topTenSenderCount: await this.getTopTenSenderCount(),
         topTenSenderDomainCount: await this.getTopTenSenderDomainCount(),
         topTenLabelsCount: await this.getTopTenLabelsCount(),
@@ -76,6 +79,29 @@ export class DashboardService {
       throw error;
     }
   }
+  private async getCountByLabel(label: string): Promise<number> {
+    try {
+      return await this.messageRepository.countBy({
+        userId: this.userId,
+        labelIds: label,
+      });
+    } catch (error) {
+      this.logger.error(`Error getting message count for user`, error);
+      throw error;
+    }
+  }
+
+  private async getArchivedMessageCount(): Promise<number> {
+    try {
+      return await this.messageRepository.countBy({
+        userId: this.userId,
+        labelIds: { $nin: ['INBOX', 'SENT', 'DRAFT'] },
+      });
+    } catch (error) {
+      this.logger.error(`Error getting archived message count for user`, error);
+      throw error;
+    }
+  }
 
   private async getEmailsCountByDateRange(
     minDate: Date,
@@ -116,19 +142,18 @@ export class DashboardService {
         .aggregate(
           [
             {
+              $unwind: {
+                path: '$from',
+              },
+            },
+            {
               $match: {
                 userId: this.userId,
-                from: {
-                  $not: {
-                    $regex: this.request['user'].email,
-                    $options: 'i',
-                  },
-                },
               },
             },
             {
               $group: {
-                _id: '$from',
+                _id: '$from.address',
                 count: { $count: {} },
               },
             },
@@ -158,19 +183,11 @@ export class DashboardService {
             {
               $match: {
                 userId: this.userId,
-                from: {
-                  $not: {
-                    $regex: this.request['user'].email,
-                    $options: 'i',
-                  },
-                },
               },
             },
             {
               $group: {
-                _id: {
-                  $arrayElemAt: [{ $split: ['$from', '@'] }, 1],
-                },
+                _id: '$from.domain',
                 count: { $count: {} },
               },
             },
@@ -203,7 +220,6 @@ export class DashboardService {
             {
               $match: {
                 userId: this.userId,
-                labelIds: { $nin: ['SENT', 'INBOX', 'UNREAD'] },
               },
             },
             { $unwind: '$labelIds' },

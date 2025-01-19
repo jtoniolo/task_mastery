@@ -1,10 +1,11 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { DashboardDto } from '../../proxy';
+import { dashboardDtoToDashboardData } from './dashboard.utils';
 import { dashboardApiActions, dashboardPageActions } from './dashboard.actions';
+import { DashboardData } from './dashboard.models';
 
 interface DashboardState {
   loading: boolean;
-  data: DashboardDto | null;
+  data: DashboardData | null;
   error: any;
 }
 
@@ -23,7 +24,7 @@ export const dashboardFeature = createFeature({
     on(dashboardApiActions.loadSuccess, (state, { data }) => ({
       ...state,
       loading: false,
-      data,
+      data: dashboardDtoToDashboardData(data),
     })),
     on(dashboardApiActions.loadFailure, (state, { error }) => ({
       ...state,

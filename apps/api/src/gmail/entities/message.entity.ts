@@ -20,6 +20,17 @@ export class MessagePart {
   parts: MessagePart[];
 }
 
+export class Address {
+  @Column()
+  name: string;
+  @Column()
+  address: string;
+  @Column()
+  domain: string;
+  @Column()
+  rawAddress: string;
+}
+
 @Entity({ name: 'messages' })
 export class Message {
   @ObjectIdColumn()
@@ -34,11 +45,13 @@ export class Message {
   @Column()
   threadId?: string;
 
-  @Column()
-  from?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @Column((type) => Address)
+  from?: Address;
 
-  @Column()
-  to?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @Column((type) => Address)
+  to?: Address;
 
   @Column()
   date: Date;

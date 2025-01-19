@@ -9,7 +9,7 @@ import { NewMessagesRequest } from 'queue/models/new-messages.request';
 import { QUEUE_NEW_MESSAGES } from 'queue/queue.constants';
 import { UserService } from 'users/user.service';
 import { GmailClient } from 'gmail/gmail.client';
-import { Message } from 'gmail/entities/message.entity';
+import { Address, Message } from 'gmail/entities/message.entity';
 
 @Processor(QUEUE_NEW_MESSAGES)
 /**
@@ -101,6 +101,25 @@ export class NewMessagesConsumer extends WorkerHost {
     return body;
   }
 
+  private parseEmailAddress(email: string): Address {
+    const address = new Address();
+    const emailParts = email.split('<');
+    if (emailParts.length > 1) {
+      address.name = emailParts[0].trim();
+      address.address = emailParts[1].replace('>', '').trim();
+    } else {
+      address.address = emailParts[0].trim();
+    }
+
+    try {
+      address.domain = address.address.split('@')[1];
+    } catch (e) {
+      this.logger.error(`Error parsing email address: ${email}`, e.message);
+    }
+    address.rawAddress = email;
+    return address;
+  }
+
   /**
    * Merges the full details of a Gmail message into a local message.
    *
@@ -116,12 +135,14 @@ export class NewMessagesConsumer extends WorkerHost {
     message.labelIds = gmailMessage.labelIds;
     message.threadId = gmailMessage.threadId;
     message.sizeEstimate = gmailMessage.sizeEstimate;
-    message.from = gmailMessage.payload?.headers?.find(
-      (header) => header.name === 'From',
-    )?.value;
-    message.to = gmailMessage.payload?.headers?.find(
-      (header) => header.name === 'To',
-    )?.value;
+    message.from = this.parseEmailAddress(
+      gmailMessage.payload?.headers?.find((header) => header.name === 'From')
+        ?.value ?? '',
+    );
+    message.to = this.parseEmailAddress(
+      gmailMessage.payload?.headers?.find((header) => header.name === 'To')
+        ?.value ?? '',
+    );
     message.subject = gmailMessage.payload?.headers?.find(
       (header) => header.name === 'Subject',
     )?.value;
@@ -147,12 +168,14 @@ export class NewMessagesConsumer extends WorkerHost {
     message.labelIds = gmailMessage.labelIds;
     message.threadId = gmailMessage.threadId;
     message.sizeEstimate = gmailMessage.sizeEstimate;
-    message.from = gmailMessage.payload?.headers?.find(
-      (header) => header.name === 'From',
-    )?.value;
-    message.to = gmailMessage.payload?.headers?.find(
-      (header) => header.name === 'To',
-    )?.value;
+    message.from = this.parseEmailAddress(
+      gmailMessage.payload?.headers?.find((header) => header.name === 'From')
+        ?.value ?? '',
+    );
+    message.to = this.parseEmailAddress(
+      gmailMessage.payload?.headers?.find((header) => header.name === 'To')
+        ?.value ?? '',
+    );
     message.subject = gmailMessage.payload?.headers?.find(
       (header) => header.name === 'Subject',
     )?.value;
