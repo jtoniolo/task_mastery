@@ -1,5 +1,12 @@
 <mat-card appearance="outlined">
-  <mat-card-title>{{ title() }} </mat-card-title>
+  <mat-card-title
+    >{{ label() }}
+    <mat-icon
+      *ngIf="inboxCountWarning()"
+      matTooltip="The sum of your inbox, sent and archived messages is greater than the total. This is likely because you have sent yourself emails."
+      >info</mat-icon
+    ></mat-card-title
+  >
   <mat-card-content>
     <mat-list>
       <mat-list-item *ngFor="let item of datasource()">

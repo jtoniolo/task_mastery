@@ -12,6 +12,7 @@ export interface DashboardSenderCount {
 
 export interface DashboardData {
   summary: DashboardSummaryItem[];
+  inboxCountWarning: boolean;
   topTenSenders: DashboardSenderCount[];
   topTenSenderDomains: DashboardSenderCount[];
   topTenLabels: DashboardSummaryItem[];

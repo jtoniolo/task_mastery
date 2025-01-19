@@ -63,6 +63,9 @@ export const dashboardDtoToDashboardData = (
         drillDownKey: 'olderThan1Month',
       },
     ],
+    inboxCountWarning:
+      dto.inboxMessageCount + dto.archivedMessageCount + dto.sentMessageCount >
+      dto.messageCount,
     topTenSenders: dto?.topTenSenderCount.map((sender) => ({
       title: sender.sender,
       value: sender.count,

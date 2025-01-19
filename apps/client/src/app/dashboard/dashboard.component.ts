@@ -3,7 +3,6 @@ import { AppFacade } from '../+state/app.facade';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { DashboardFacade } from '../+state';
-import { map } from 'rxjs';
 import { SummaryCardComponent } from './summary-card/summary-card.component';
 @Component({
   selector: 'tsm-dashboard',
