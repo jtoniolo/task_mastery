@@ -10,6 +10,7 @@
       dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
     "
     (drillDown)="drillDown($event)"
+    (quickDelete)="quickDelete($event)"
     [inboxCountWarning]="dashboard()?.inboxCountWarning ?? false"
   ></tsm-summary-card>
   <tsm-summary-card
@@ -18,6 +19,7 @@
       dashboard()?.topTenSenders ?? [{ title: 'Loading...', value: 0 }]
     "
     (drillDown)="drillDown($event)"
+    (quickDelete)="quickDelete($event)"
   ></tsm-summary-card>
 
   <tsm-summary-card
@@ -26,6 +28,7 @@
       dashboard()?.topTenSenderDomains ?? [{ title: 'Loading...', value: 0 }]
     "
     (drillDown)="drillDown($event)"
+    (quickDelete)="quickDelete($event)"
   ></tsm-summary-card>
 
   <tsm-summary-card
@@ -35,5 +38,6 @@
       dashboard()?.topTenLabels ?? [{ title: 'Loading...', value: 0 }]
     "
     (drillDown)="drillDown($event)"
+    (quickDelete)="quickDelete($event)"
   ></tsm-summary-card>
 </div>

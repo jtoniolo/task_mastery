@@ -10,6 +10,12 @@ export class DashboardFacade {
   dashboardOpen() {
     this.store.dispatch(dashboardPageActions.open());
   }
+  drillDown(key: string) {
+    this.store.dispatch(dashboardPageActions.drillDown({ key }));
+  }
+  quickDelete(key: string) {
+    this.store.dispatch(dashboardPageActions.quickDelete({ key }));
+  }
 
   dashboard$ = this.store.pipe(select(dashboardFeature.selectData));
   unprocessedMessages$ = this.store.pipe(

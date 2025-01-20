@@ -10,57 +10,57 @@ export const dashboardDtoToDashboardData = (
       {
         title: 'Unread Messages',
         value: dto?.unreadMessageCount,
-        drillDownKey: 'unread',
+        queryKey: 'unread',
       },
       {
         title: 'Inbox Messages',
         value: dto?.inboxMessageCount,
-        drillDownKey: 'inbox',
+        queryKey: 'inbox',
       },
       {
         title: 'Sent Messages',
         value: dto?.sentMessageCount,
-        drillDownKey: 'sent',
+        queryKey: 'sent',
       },
       {
         title: 'Archived Messages',
         value: dto?.archivedMessageCount,
-        drillDownKey: 'archived',
+        queryKey: 'archived',
       },
       {
         title: 'Emails Older Than 10 Years',
         value: dto?.emailsOlderThan10Years,
-        drillDownKey: 'olderThan10Years',
+        queryKey: 'olderThan10Years',
       },
       {
         title: 'Emails Older Than 5 Years',
         value: dto?.emailsOlderThan5Years,
-        drillDownKey: 'olderThan5Years',
+        queryKey: 'olderThan5Years',
       },
       {
         title: 'Emails Older Than 3 Years',
         value: dto?.emailsOlderThan3Years,
-        drillDownKey: 'olderThan3Years',
+        queryKey: 'olderThan3Years',
       },
       {
         title: 'Emails Older Than 1 Year',
         value: dto?.emailsOlderThan1Year,
-        drillDownKey: 'olderThan1Year',
+        queryKey: 'olderThan1Year',
       },
       {
         title: 'Emails Older Than 6 Months',
         value: dto?.emailsOlderThan6Months,
-        drillDownKey: 'olderThan6Months',
+        queryKey: 'olderThan6Months',
       },
       {
         title: 'Emails Older Than 3 Months',
         value: dto?.emailsOlderThan3Months,
-        drillDownKey: 'olderThan3Months',
+        queryKey: 'olderThan3Months',
       },
       {
         title: 'Emails Older Than 1 Month',
         value: dto?.emailsOlderThan1Month,
-        drillDownKey: 'olderThan1Month',
+        queryKey: 'olderThan1Month',
       },
     ],
     inboxCountWarning:
@@ -69,17 +69,17 @@ export const dashboardDtoToDashboardData = (
     topTenSenders: dto?.topTenSenderCount.map((sender) => ({
       title: sender.sender,
       value: sender.count,
-      drillDownKey: 'sender:' + sender.sender,
+      queryKey: 'sender:' + sender.sender,
     })),
     topTenSenderDomains: dto?.topTenSenderDomainCount.map((sender) => ({
       title: sender.sender,
       value: sender.count,
-      drillDownKey: 'domain:' + sender.sender,
+      queryKey: 'domain:' + sender.sender,
     })),
     topTenLabels: dto?.topTenLabelsCount.map((label) => ({
       title: label.labelId,
       value: label.count,
-      drillDownKey: 'label:' + label.labelId,
+      queryKey: 'label:' + label.labelId,
     })),
   };
 };

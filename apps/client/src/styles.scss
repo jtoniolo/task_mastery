@@ -1,5 +1,19 @@
 @use "@angular/material" as mat;
-/* You can add global styles to this file, and also import other style files */
+@use "./styles/_theme-colors.scss" as theme-colors;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
 
 html,
 body {
@@ -11,6 +25,56 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+/* Theme Overrides */
+:root {
+  /* Buttons */
+  @include mat.fab-overrides(
+    (
+      small-container-color: var(--mat-sys-primary-container),
+      small-foreground-color: var(--mat-sys-surface-tint),
+    )
+  );
+  /* Cards */
+
+  @include mat.card-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-primary),
+      subtitle-text-color: var(--mat-sys-surface-tint),
+    )
+  );
+
+  /* Chips */
+  @include mat.chips-overrides(
+    (
+      container-shape-radius: 2em,
+      outline-color: var(--mat-sys-primary-container),
+      elevated-container-color: var(--mat-sys-primary-container),
+      disabled-outline-color: var(--mat-sys-error),
+      label-text-color: var(--mat-sys-surface-tint),
+    )
+  );
+}
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--mat-sys-primary);
+}
+
+/* Buttons */
+button[mat-mini-fab] {
+  margin: 0.1em;
+  border-radius: 2em;
+}
+
+/* Cards */
 mat-card {
-  padding: 10px;
+  margin: 0.2em;
+  padding: 0.5em;
+  mat-card-title {
+    color: var(--mat-sys-primary);
+  }
 }
