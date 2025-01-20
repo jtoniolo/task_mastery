@@ -20,16 +20,18 @@
             }
           }
           <mat-chip class="count">{{ item.value }}</mat-chip>
-          <div class="actions">
+          <div class="actions" *ngIf="item.queryKey">
             <button
               mat-mini-fab
               aria-label="Example icon button with a menu icon"
+              (click)="drillDown.emit(item.queryKey)"
             >
               <mat-icon>menu</mat-icon>
             </button>
             <button
               mat-mini-fab
               aria-label="Example icon button with a menu icon"
+              (click)="quickDelete.emit(item.queryKey)"
             >
               <mat-icon>delete_sweep</mat-icon>
             </button>

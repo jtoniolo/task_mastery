@@ -1,19 +1,13 @@
 export interface DashboardSummaryItem {
   title: string;
   value: number;
-  drillDownKey?: string;
-}
-
-export interface DashboardSenderCount {
-  title: string;
-  value: number;
-  drillDownKey: string;
+  queryKey?: string;
 }
 
 export interface DashboardData {
   summary: DashboardSummaryItem[];
   inboxCountWarning: boolean;
-  topTenSenders: DashboardSenderCount[];
-  topTenSenderDomains: DashboardSenderCount[];
+  topTenSenders: DashboardSummaryItem[];
+  topTenSenderDomains: DashboardSummaryItem[];
   topTenLabels: DashboardSummaryItem[];
 }

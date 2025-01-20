@@ -27,6 +27,7 @@ export class SummaryCardComponent {
   label = input.required<string>();
   datasource = input.required<SummaryItem[]>();
   drillDown = output<string>();
+  quickDelete = output<string>();
   inboxCountWarning = input<boolean | undefined>();
   labels = input<LabelEntity[]>();
 }
@@ -34,7 +35,7 @@ export class SummaryCardComponent {
 export interface SummaryItem {
   title: string;
   value?: number;
-  drillDownKey?: string;
+  queryKey?: string;
 }
 
 interface LabelEntity {
