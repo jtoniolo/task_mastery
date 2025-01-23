@@ -34,7 +34,11 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles/tokens.scss", "src/styles.scss"],
+            "styles": [
+              "src/styles/tokens.scss",
+              "src/styles.scss",
+              "src/styles/responsive.scss"
+            ],
             "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,

@@ -107,11 +107,13 @@ export class DashboardService {
 
   async getTop10AggregateCount(
     pipeline: ObjectLiteral[],
+    match: ObjectLiteral = {},
   ): Promise<SenderCountDto[]> {
     try {
       const _pipeline = [
         {
           $match: {
+            ...match,
             userId: this.userId,
           },
         },
@@ -138,30 +140,47 @@ export class DashboardService {
   }
 
   async getTopTenSenderCount(): Promise<SenderCountDto[]> {
-    return this.getTop10AggregateCount([
-      {
-        $unwind: {
-          path: '$from',
+    return this.getTop10AggregateCount(
+      [
+        {
+          $unwind: {
+            path: '$from',
+          },
         },
-      },
-      {
-        $group: {
-          _id: '$from.address',
-          count: { $count: {} },
+        {
+          $unwind: {
+            path: '$to',
+          },
         },
+        {
+          $group: {
+            _id: '$from.address',
+            count: { $count: {} },
+          },
+        },
+      ],
+      {
+        // exclude emails in SENT label
+        labelIds: { $nin: ['SENT'] },
       },
-    ]);
+    );
   }
 
   async getTopTenSenderDomainCount(): Promise<SenderCountDto[]> {
-    return this.getTop10AggregateCount([
-      {
-        $group: {
-          _id: '$from.domain',
-          count: { $count: {} },
+    return this.getTop10AggregateCount(
+      [
+        {
+          $group: {
+            _id: '$from.domain',
+            count: { $count: {} },
+          },
         },
+      ],
+      {
+        // exclude emails in SENT label
+        labelIds: { $nin: ['SENT'] },
       },
-    ]);
+    );
   }
 
   async getTopTenLabelsCount(): Promise<LabelCountDto[]> {

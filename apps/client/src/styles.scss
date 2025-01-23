@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 @use "./styles/_theme-colors.scss" as theme-colors;
-
+@use "./styles/responsive.scss" as responsive;
 html {
   @include mat.theme(
     (

@@ -3,3 +3,36 @@ div.container {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+// Media queries for screen sizes
+// Small devices (landscape phones, 576px and up)
+@media screen and (max-width: 576px) {
+  mat-card {
+    float: left;
+    max-width: 100%;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media screen and (min-width: 768px) {
+  mat-card {
+    float: left;
+    max-width: 100%;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media screen and (min-width: 992px) {
+  mat-card {
+    float: left;
+    max-width: 49.4%;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media screen and (min-width: 1200px) {
+  mat-card {
+    float: left;
+    max-width: 24.6%;
+  }
+}
