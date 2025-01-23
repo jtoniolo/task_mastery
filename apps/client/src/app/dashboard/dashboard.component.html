@@ -4,7 +4,57 @@
   Please check back in a few minutes.
 </p>
 <div class="container">
+  <mat-card appearance="outlined">
+    <mat-card-title>Summary</mat-card-title>
+    <mat-card-content>
+      <canvas
+        baseChart
+        [data]="summaryChart()"
+        [options]="chartOptions"
+        (chartClick)="chartClick($event)"
+        (contextmenu)="$event.preventDefault()"
+      ></canvas>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-title>Messages by Sender</mat-card-title>
+    <mat-card-content>
+      <canvas
+        baseChart
+        [data]="senderChart()"
+        [options]="chartOptions"
+        (chartClick)="chartClick($event)"
+        (contextmenu)="$event.preventDefault()"
+      ></canvas>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-title>Messages by Sender Domain</mat-card-title>
+    <mat-card-content>
+      <canvas
+        baseChart
+        [data]="senderDomainChart()"
+        [options]="chartOptions"
+        (chartClick)="chartClick($event)"
+      ></canvas>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined">
+    <mat-card-title>Messages by Label</mat-card-title>
+    <mat-card-content>
+      <canvas
+        baseChart
+        [data]="labelChart()"
+        [options]="chartOptions"
+        (chartClick)="chartClick($event)"
+      ></canvas>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="flex-container">
   <tsm-summary-card
+    class="float-right"
     label="Gmail Summary"
     [datasource]="
       dashboard()?.summary ?? [{ title: 'Loading...', value: undefined }]
@@ -14,6 +64,7 @@
     [inboxCountWarning]="dashboard()?.inboxCountWarning ?? false"
   ></tsm-summary-card>
   <tsm-summary-card
+    class="float-right"
     label="Top Senders"
     [datasource]="
       dashboard()?.topTenSenders ?? [{ title: 'Loading...', value: 0 }]
@@ -23,6 +74,7 @@
   ></tsm-summary-card>
 
   <tsm-summary-card
+    class="float-right"
     label="Top Sender Domains"
     [datasource]="
       dashboard()?.topTenSenderDomains ?? [{ title: 'Loading...', value: 0 }]
@@ -32,6 +84,7 @@
   ></tsm-summary-card>
 
   <tsm-summary-card
+    class="float-right"
     label="Top Labels"
     [labels]="labels()"
     [datasource]="
