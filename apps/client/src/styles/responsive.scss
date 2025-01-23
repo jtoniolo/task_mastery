@@ -18,11 +18,9 @@ Responsive columns
 }
 
 .container {
-  //display: table;
   height: auto;
   box-sizing: border-box;
   margin: 0;
-  // justify-content: center;
 }
 [class*="col-"] {
   float: left;
