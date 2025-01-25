@@ -1,1 +1,30 @@
+<mat-toolbar>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Email Butler</span>
+  <span class="example-spacer"></span>
+
+  <button mat-icon-button class="example-icon" aria-label="User profile link">
+    <mat-icon>person</mat-icon>
+  </button>
+</mat-toolbar>
 <router-outlet />
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      @for (link of links; track link) {
+        <mat-list-item [activated]="link.isActive">
+          <a matListItemTitle href="..."
+            ><mat-icon>{{ link.icon }}</mat-icon> {{ link.label }}</a
+          >
+        </mat-list-item>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content><router-outlet /></mat-sidenav-content>
+</mat-sidenav-container>
