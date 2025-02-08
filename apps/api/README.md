@@ -22,54 +22,119 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# TaskMastery API
+
 ## Description
+The TaskMastery API is built with NestJS and provides the backend services for task management, authentication, and integration with external services.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Local Development Setup
 
-## Project setup
+### Prerequisites
+- Node.js (v18 or later)
+- yarn (v1.22 or later)
+- Docker
 
+### Installation and Setup
+
+1. Install dependencies:
 ```bash
-$ yarn install
+yarn
 ```
 
-## Compile and run the project
-
+2. Configure MongoDB:
+- Ensure MongoDB container is running (see root README for Docker setup)
+- Default connection URI: mongodb://admin:password@localhost:27017/task_mastery
+- If you need to start MongoDB separately:
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+docker run -d \
+  --name task-mastery-mongodb \
+  --network task-mastery-network \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  mongo:7.0
+```
+- Verify MongoDB connection using the health check endpoint:
+```bash
+curl http://localhost:3000/api/health/readiness
+```
+- Expected response if MongoDB is connected:
+```json
+{
+  "status": "ok",
+  "info": {
+    "database": {
+      "status": "up"
+    }
+  }
+}
 ```
 
-## Run tests
+3. Set up environment variables:
+- Copy and configure .env file as described in the root README
+- Required for local development:
+  - MONGODB_URI
+  - GOOGLE_CLIENT_ID
+  - GOOGLE_CLIENT_SECRET
+  - JWT_SECRET
+  - SESSION_SECRET
+
+### Development Server
 
 ```bash
-# unit tests
-$ yarn run test
+# Start in development mode with hot-reload
+yarn start:dev
 
-# e2e tests
-$ yarn run test:e2e
+# Start in debug mode
+yarn start:debug
 
-# test coverage
-$ yarn run test:cov
+# Build and start in production mode
+yarn build
+yarn start:prod
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Testing
 
 ```bash
-$ yarn install -g mau
-$ mau deploy
+# Unit tests with watch mode
+yarn test:watch
+
+# E2E tests
+yarn test:e2e
+
+# Test coverage
+yarn test:cov
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## API Documentation
+- Swagger UI available at `/api` when the server is running
+- OpenAPI specification available at `/api-json`
+
+## Authentication
+The API uses JWT-based authentication with Google OAuth2 integration. See [auth.flow.md](src/auth/auth.flow.md) for detailed authentication flow.
+
+## Key Features
+- Google OAuth2 Integration
+- JWT Authentication
+- Health Checks (`/health`)
+- Email Processing
+- Task Management
+- User Management
+
+## Project Structure
+- `/src`
+  - `/auth` - Authentication and authorization
+  - `/config` - Configuration services
+  - `/dashboard` - Dashboard-related endpoints
+  - `/gmail` - Gmail integration
+  - `/health` - Health check endpoints
+  - `/processors` - Email and task processors
+  - `/users` - User management
+
+## Testing
+Tests are written using Jest. Each module includes:
+- Unit tests (`*.spec.ts`)
+- E2E tests (in `/test` directory)
 
 ## Resources
 
@@ -97,3 +162,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Deployment
+
+For deployment instructions, including Docker builds, refer to the root project's deployment documentation.

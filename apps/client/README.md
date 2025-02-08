@@ -1,59 +1,76 @@
-# TaskMasteryClient
+# TaskMastery Client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+## Description
+Angular-based frontend application for TaskMastery, providing a modern and responsive user interface for task management and productivity tools.
 
-## Development server
+## Local Development Setup
 
-To start a local development server, run:
+### Prerequisites
+- Node.js (v18 or later)
+- yarn (v1.22 or later)
+- Backend API running locally (see root README)
 
+### Installation and Setup
+
+1. Install dependencies:
 ```bash
-ng serve
+yarn
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2. Configure environment:
+- Default configuration should work for local development
+- Environment files located in:
+  - `src/environments/environment.ts` - Development settings
+  - `src/environments/environment.prod.ts` - Production settings
 
-## Code scaffolding
+Key configuration parameters:
+- `API_BASE_PATH` - Backend API URL (default: http://localhost:3000)
+- `GOOGLE_CLIENT_ID` - Must match API's Google OAuth client ID
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Development Server
 
 ```bash
-ng build
+# Start development server
+yarn start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The application will be available at http://localhost:4200
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
+### Running Tests
 ```bash
-ng test
+# Unit tests with watch mode
+yarn test:watch
+
+# Generate coverage report
+yarn test:cov
 ```
 
-## Running end-to-end tests
+## Features
+- Progressive Web App (PWA) support
+- Responsive Material Design UI
+- OAuth2 Authentication
+- Real-time updates
+- Offline support
 
-For end-to-end (e2e) testing, run:
+## Project Structure
+- `/src`
+  - `/app` - Application components and modules
+    - `/+state` - State management
+    - `/auth` - Authentication components
+    - `/dashboard` - Dashboard features
+    - `/dialog` - Reusable dialogs
+  - `/styles` - Global styles and themes
+  - `/assets` - Static assets
 
-```bash
-ng e2e
-```
+## Progressive Web App
+The application includes PWA features:
+- Offline functionality
+- Push notifications
+- Install prompts
+- Auto-updates
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Configure PWA features in `ngsw-config.json`
 
-## Additional Resources
+## Building for Production
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+For production build and deployment instructions, refer to the root project's deployment documentation.
