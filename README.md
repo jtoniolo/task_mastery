@@ -42,6 +42,7 @@ Looking ahead, TaskMastery aims to integrate with various tools and platforms to
 - **Frontend**: Angular (v19)
 - **Backend**: NestJS with TypeScript
 - **Database**: MongoDB
+- **Queue/Cache**: Dragonfly (Redis-compatible)
 - **Container**: Docker
 - **Testing**: Jest
 
@@ -64,9 +65,11 @@ We recommend using Podman as your container runtime due to its fully open-source
 ```sh
 # Pull the MongoDB image
 podman pull docker.io/mongodb/mongodb-community-server:latest
+# Pull the Dragonfly image
+podman pull docker.dragonflydb.io/dragonflydb/dragonfly
 
 # Create a pod for the application
-podman pod create --name task-mastery-pod -p 27017:27017
+podman pod create --name task-mastery-pod -p 27017:27017 -p 6379:6379
 
 # Run MongoDB container
 podman run -d \
@@ -76,6 +79,14 @@ podman run -d \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
   -v mongodb_data:/data/db \
   docker.io/mongodb/mongodb-community-server:latest
+
+# Run Dragonfly container (Redis-compatible)
+podman run -d \
+  --pod task-mastery-pod \
+  --name dragonfly \
+  --ulimit memlock=-1 \
+  -v dragonfly_data:/data \
+  docker.dragonflydb.io/dragonflydb/dragonfly
 ```
 
 #### Using Docker
@@ -83,6 +94,8 @@ podman run -d \
 ```sh
 # Pull the MongoDB image
 docker pull mongodb/mongodb-community-server:latest
+# Pull the Dragonfly image
+docker pull docker.dragonflydb.io/dragonflydb/dragonfly
 
 # Create a network
 docker network create task-mastery-network
@@ -96,6 +109,15 @@ docker run -d \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
   -v mongodb_data:/data/db \
   mongodb/mongodb-community-server:latest
+
+# Run Dragonfly container (Redis-compatible)
+docker run -d \
+  --name dragonfly \
+  --network task-mastery-network \
+  --ulimit memlock=-1 \
+  -p 6379:6379 \
+  -v dragonfly_data:/data \
+  docker.dragonflydb.io/dragonflydb/dragonfly
 ```
 
 Verify the container is running:
