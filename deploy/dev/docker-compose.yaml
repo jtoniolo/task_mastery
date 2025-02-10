@@ -6,6 +6,7 @@ services:
     image: ghcr.io/jtoniolo/email_sweeperr_api:dev
     depends_on:
       - dev-mongo
+      - dev-redis
     environment:
       - CLIENT_URL=${CLIENT_URL}
       - CORS_ORIGINS=${CORS_ORIGINS}
@@ -18,6 +19,8 @@ services:
       - LOKI_HOST=${LOKI_HOST}
       - MONGODB_DB_NAME=${MONGODB_DB_NAME}
       - MONGODB_URI=${MONGODB_URI}
+      - REDIS_HOST=dev-redis
+      - REDIS_PORT=6379
       - SESSION_SECRET=${SESSION_SECRET}
       - TRUSTED_PROXIES=${TRUSTED_PROXIES}
 
@@ -35,3 +38,16 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
+  dev-redis:
+    container_name: dev-email-sweeperr-redis
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    ulimits:
+      memlock: -1
+    volumes:
+      - dragonfly_data:/data
+    ports:
+      - "6379:6379"
+
+volumes:
+  dragonfly_data:
