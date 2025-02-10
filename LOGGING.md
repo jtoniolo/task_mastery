@@ -12,7 +12,7 @@ We use the `winston` logging library for implementing logging in the NestJS API.
 
 The logging configuration is set up in the `main.ts` file using the `WinstonModule` from `nest-winston`. The configuration includes logging to both the console and a file named `application.log`.
 
-See https://www.npmjs.com/package/nest-winston for more details
+See <https://www.npmjs.com/package/nest-winston> for more details
 
 ## Log Entries
 
@@ -20,7 +20,7 @@ Log entries include timestamps, log levels, and relevant context information (e.
 
 ### Example Log Entry
 
-```
+```json
 {
   "timestamp": "2023-05-01T12:34:56.789Z",
   "level": "info",
